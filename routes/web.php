@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KeuanganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,7 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('pages.index');
 })->name('dashboard');
+
+Route::get('/buku-apb-desa', [KeuanganController::class,'apbdesa'])->name('keuangan.apbdesa');
+Route::get('/buku-rab-desa', [KeuanganController::class,'rabdesa'])->name('keuangan.rabdesa');
+Route::get('/buku-kaspemkeg-desa', [KeuanganController::class,'kaspemkegdesa'])->name('keuangan.kaspemkegdesa');
