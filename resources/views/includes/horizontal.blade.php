@@ -5,21 +5,21 @@
                             <div class="col">
                                 <div class="horizontal-bar-menu">
                                     <ul>
-                                        <li><a href="index.html" class="active">Dashboard</a></li>
+                                        <li><a href="/dashboard" class="{{ (request()->routeIs('dashboard')) ? 'active' : '' }}">Dashboard</a></li>
                                         <li>
-                                            <a href="#">Umum<i class="material-icons">keyboard_arrow_down</i></a>
+                                            <a href="#" class="{{ (request()->routeIs('umum.*')) ? 'active' : '' }}">Umum<i class="material-icons">keyboard_arrow_down</i></a>
                                             <ul>
                                                 <li>
-                                                    <a href="mailbox.html">Peraturan Desa</a>
+                                                    <a href="/peraturan-desa" class="{{ (request()->routeIs('umum.peraturan-desa')) ? 'active' : '' }}">Peraturan Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="profile.html">Buku Keputusan Kepala Desa</a>
+                                                    <a href="/buku-keputusan" class="{{ (request()->routeIs('umum.buku-keputusan')) ? 'active' : '' }}">Buku Keputusan Kepala Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="file-manager.html">Buku Aparat Pemerintah Desa</a>
+                                                    <a href="/buku-aparat" class="{{ (request()->routeIs('umum.buku-aparat')) ? 'active' : '' }}">Buku Aparat Pemerintah Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="calendar.html">Buku Agenda</a>
+                                                    <a href="/buku-agenda" class="{{ (request()->routeIs('umum.buku-agenda')) ? 'active' : '' }}">Buku Agenda</a>
                                                 </li>
                                             </ul>
                                         </li>
