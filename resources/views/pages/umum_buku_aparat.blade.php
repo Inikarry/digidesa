@@ -4,7 +4,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="#">Umum</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Peraturan Desa</li>
+                                <li class="breadcrumb-item active" aria-current="page">Buku Aparat</li>
                             </ol>
                         </nav>
                     </div>
