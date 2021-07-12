@@ -5,40 +5,40 @@
                             <div class="col">
                                 <div class="horizontal-bar-menu">
                                     <ul>
-                                        <li><a href="index.html" class="active">Dashboard</a></li>
+                                        <li><a href="/dashboard" class="{{ (request()->routeIs('dashboard')) ? 'active' : '' }}">Dashboard</a></li>
                                         <li>
-                                            <a href="#">Umum<i class="material-icons">keyboard_arrow_down</i></a>
+                                            <a href="#" class="{{ (request()->routeIs('umum.*')) ? 'active' : '' }}">Umum<i class="material-icons">keyboard_arrow_down</i></a>
                                             <ul>
                                                 <li>
-                                                    <a href="mailbox.html">Peraturan Desa</a>
+                                                    <a href="/peraturan-desa" class="{{ (request()->routeIs('umum.peraturan-desa')) ? 'active' : '' }}">Peraturan Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="profile.html">Buku Keputusan Kepala Desa</a>
+                                                    <a href="/buku-keputusan" class="{{ (request()->routeIs('umum.buku-keputusan')) ? 'active' : '' }}">Buku Keputusan Kepala Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="file-manager.html">Buku Aparat Pemerintah Desa</a>
+                                                    <a href="/buku-aparat" class="{{ (request()->routeIs('umum.buku-aparat')) ? 'active' : '' }}">Buku Aparat Pemerintah Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="calendar.html">Buku Agenda</a>
+                                                    <a href="/buku-agenda" class="{{ (request()->routeIs('umum.buku-agenda')) ? 'active' : '' }}">Buku Agenda</a>
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li><a href="#">Penduduk<i class="material-icons">keyboard_arrow_down</i></a>
+                                        <li><a href="#" class="{{ (request()->routeIs('penduduk.*')) ? 'active' : '' }}">Penduduk<i class="material-icons">keyboard_arrow_down</i></a>
                                             <ul>
                                                 <li>
-                                                    <a href="styles-typography.html">Buku Induk Penduduk</a>
+                                                    <a href="/buku-induk-penduduk" class="{{ (request()->routeIs('penduduk.buku_induk_penduduk')) ? 'active' : '' }}">Buku Induk Penduduk</a>
                                                 </li>
                                                 <li>
-                                                    <a href="styles-code.html">Buku Mutasi Penduduk Desa</a>
+                                                    <a href="/buku-mutasi" class="{{ (request()->routeIs('penduduk.buku_mutasi')) ? 'active' : '' }}">Buku Mutasi Penduduk Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="styles-tables.html">Buku Rekapitulasi Jumlah Penduduk</a>
+                                                    <a href="/buku-rekapitulasi" class="{{ (request()->routeIs('penduduk.buku_rekapitulasi')) ? 'active' : '' }}">Buku Rekapitulasi Jumlah Penduduk</a>
                                                 </li>
                                                 <li>
-                                                    <a href="styles-icons.html">Buku Penduduk Sementara</a>
+                                                    <a href="/buku-penduduk" class="{{ (request()->routeIs('penduduk.buku_penduduk')) ? 'active' : '' }}">Buku Penduduk Sementara</a>
                                                 </li>
                                                 <li>
-                                                    <a href="styles-icons.html">Buku KTP dan Buku KK</a>
+                                                    <a href="/buku-ktp" class="{{ (request()->routeIs('penduduk.buku_ktp')) ? 'active' : '' }}">Buku KTP dan Buku KK</a>
                                                 </li>
                                             </ul>
                                         </li>
