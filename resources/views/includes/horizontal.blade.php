@@ -23,22 +23,22 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li><a href="#">Penduduk<i class="material-icons">keyboard_arrow_down</i></a>
+                                        <li><a href="#" class="{{ (request()->routeIs('penduduk.*')) ? 'active' : '' }}">Penduduk<i class="material-icons">keyboard_arrow_down</i></a>
                                             <ul>
                                                 <li>
-                                                    <a href="styles-typography.html">Buku Induk Penduduk</a>
+                                                    <a href="/buku-induk-penduduk" class="{{ (request()->routeIs('penduduk.buku_induk_penduduk')) ? 'active' : '' }}">Buku Induk Penduduk</a>
                                                 </li>
                                                 <li>
-                                                    <a href="styles-code.html">Buku Mutasi Penduduk Desa</a>
+                                                    <a href="/buku-mutasi" class="{{ (request()->routeIs('penduduk.buku_mutasi')) ? 'active' : '' }}">Buku Mutasi Penduduk Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="styles-tables.html">Buku Rekapitulasi Jumlah Penduduk</a>
+                                                    <a href="/buku-rekapitulasi" class="{{ (request()->routeIs('penduduk.buku_rekapitulasi')) ? 'active' : '' }}">Buku Rekapitulasi Jumlah Penduduk</a>
                                                 </li>
                                                 <li>
-                                                    <a href="styles-icons.html">Buku Penduduk Sementara</a>
+                                                    <a href="/buku-penduduk" class="{{ (request()->routeIs('penduduk.buku_penduduk')) ? 'active' : '' }}">Buku Penduduk Sementara</a>
                                                 </li>
                                                 <li>
-                                                    <a href="styles-icons.html">Buku KTP dan Buku KK</a>
+                                                    <a href="/buku-ktp" class="{{ (request()->routeIs('penduduk.buku_ktp')) ? 'active' : '' }}">Buku KTP dan Buku KK</a>
                                                 </li>
                                             </ul>
                                         </li>
