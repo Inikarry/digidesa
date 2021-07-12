@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\UmumController;
 use App\Http\Controllers\PembangunanController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('pages.index');
 })->name('dashboard');
 
+Route::get('/buku-apb-desa', [KeuanganController::class,'apbdesa'])->name('keuangan.apbdesa');
+Route::get('/buku-rab-desa', [KeuanganController::class,'rabdesa'])->name('keuangan.rabdesa');
+Route::get('/buku-kaspemkeg-desa', [KeuanganController::class,'kaspemkegdesa'])->name('keuangan.kaspemkegdesa');
 //Administrasi Penduduk
 Route::get('/buku-induk-penduduk', [PendudukController::class, 'bukuInduk'])->name('penduduk.buku_induk_penduduk');
 Route::get('/buku-mutasi', [PendudukController::class, 'bukuMutasi'])->name('penduduk.buku_mutasi');

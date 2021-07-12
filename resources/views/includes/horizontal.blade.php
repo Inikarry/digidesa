@@ -42,16 +42,16 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li><a href="#">Keuangan<i class="material-icons">keyboard_arrow_down</i></a>
+                                        <li><a href="#" class="{{ (request()->routeIs('keuangan.*')) ? 'active' : '' }}" >Keuangan<i class="material-icons">keyboard_arrow_down</i></a>
                                             <ul>
                                                 <li>
-                                                    <a href="ui-alerts.html">Buku APB Desa</a>
+                                                    <a href="/buku-apb-desa" class="{{ (request()->routeIs('keuangan.apbdesa')) ? 'active' : '' }}" >Buku APB Desa</a> 
                                                 </li>
                                                 <li>
-                                                    <a href="ui-badge.html">Buku Rencana Anggaran Biaya</a>
+                                                    <a href="/buku-rab-desa" class="{{ (request()->routeIs('keuangan.rabdesa')) ? 'active' : '' }}">Buku RAB Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="ui-breadcrumb.html">Buku Kas Pembantu Kegiatan</a>
+                                                    <a href="/buku-kaspemkeg-desa" class="{{ (request()->routeIs('keuangan.kaspemkegdesa')) ? 'active' : ''}}">Buku Kaspemkeg Desa</a>
                                                 </li>
                                                 <li>
                                                     <a href="ui-buttons.html">Buku Kas Umum</a>
