@@ -7,125 +7,94 @@
                                     <ul>
                                         <li><a href="index.html" class="active">Dashboard</a></li>
                                         <li>
-                                            <a href="#">Apps<i class="material-icons">keyboard_arrow_down</i></a>
+                                            <a href="#">Umum<i class="material-icons">keyboard_arrow_down</i></a>
                                             <ul>
                                                 <li>
-                                                    <a href="mailbox.html">Mailbox</a>
+                                                    <a href="mailbox.html">Peraturan Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="profile.html">Profile</a>
+                                                    <a href="profile.html">Buku Keputusan Kepala Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="file-manager.html">File Manager</a>
+                                                    <a href="file-manager.html">Buku Aparat Pemerintah Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="calendar.html">Calendar</a>
-                                                </li>
-                                                <li>
-                                                    <a href="todo.html">Todo</a>
+                                                    <a href="calendar.html">Buku Agenda</a>
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li><a href="#">Style<i class="material-icons">keyboard_arrow_down</i></a>
+                                        <li><a href="#">Penduduk<i class="material-icons">keyboard_arrow_down</i></a>
                                             <ul>
                                                 <li>
-                                                    <a href="styles-typography.html">Typography</a>
+                                                    <a href="styles-typography.html">Buku Induk Penduduk</a>
                                                 </li>
                                                 <li>
-                                                    <a href="styles-code.html">Code</a>
+                                                    <a href="styles-code.html">Buku Mutasi Penduduk Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="styles-tables.html">Tables</a>
+                                                    <a href="styles-tables.html">Buku Rekapitulasi Jumlah Penduduk</a>
                                                 </li>
                                                 <li>
-                                                    <a href="styles-icons.html">Icons</a>
+                                                    <a href="styles-icons.html">Buku Penduduk Sementara</a>
+                                                </li>
+                                                <li>
+                                                    <a href="styles-icons.html">Buku KTP dan Buku KK</a>
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li><a href="#">Components<i class="material-icons">keyboard_arrow_down</i></a>
+                                        <li><a href="#">Keuangan<i class="material-icons">keyboard_arrow_down</i></a>
                                             <ul>
                                                 <li>
-                                                    <a href="ui-alerts.html">Alerts</a>
+                                                    <a href="ui-alerts.html">Buku APB Desa</a>
                                                 </li>
                                                 <li>
-                                                    <a href="ui-badge.html">Badge</a>
+                                                    <a href="ui-badge.html">Buku Rencana Anggaran Biaya</a>
                                                 </li>
                                                 <li>
-                                                    <a href="ui-breadcrumb.html">Breadcrumb</a>
+                                                    <a href="ui-breadcrumb.html">Buku Kas Pembantu Kegiatan</a>
                                                 </li>
                                                 <li>
-                                                    <a href="ui-buttons.html">Buttons</a>
+                                                    <a href="ui-buttons.html">Buku Kas Umum</a>
                                                 </li>
                                                 <li>
-                                                    <a href="ui-card.html">Card</a>
+                                                    <a href="ui-card.html">Buku Kas Pembantu</a>
                                                 </li>
                                                 <li>
-                                                    <a href="ui-collapse.html">Collapse</a>
-                                                </li>
-                                                <li>
-                                                    <a href="ui-dropdowns.html">Dropdowns</a>
-                                                </li>
-                                                <li>
-                                                    <a href="ui-list-group.html">List Group</a>
-                                                </li>
-                                                <li>
-                                                    <a href="ui-modal.html">Modal</a>
-                                                </li>
-                                                <li>
-                                                    <a href="ui-pagination.html">Pagination</a>
-                                                </li>
-                                                <li>
-                                                    <a href="ui-popovers.html">Popovers</a>
-                                                </li>
-                                                <li>
-                                                    <a href="ui-progress.html">Progress</a>
-                                                </li>
-                                                <li>
-                                                    <a href="ui-spinners.html">Spinners</a>
-                                                </li>
-                                                <li>
-                                                    <a href="ui-toast.html">Toast</a>
-                                                </li>
-                                                <li>
-                                                    <a href="ui-tooltips.html">Tooltips</a>
+                                                    <a href="ui-collapse.html">Buku Bank Desa</a>
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li><a href="#">Extended<i class="material-icons">keyboard_arrow_down</i></a>
+                                        <li><a href="#">Pembangunan<i class="material-icons">keyboard_arrow_down</i></a>
                                             <ul>
                                                 <li>
-                                                    <a href="extended-select2.html">Select2</a>
+                                                    <a href="extended-select2.html">Buku Rencana Kerja Pembangunan</a>
                                                 </li>
                                                 <li>
-                                                    <a href="extended-datatables.html">Data Tables</a>
+                                                    <a href="extended-datatables.html">Buku Kegiatan Pembangunan</a>
                                                 </li>
                                                 <li>
-                                                    <a href="extended-blockui.html">Block UI</a>
+                                                    <a href="extended-blockui.html">Buku Inventaris Hasil Pembangunan</a>
                                                 </li>
                                                 <li>
-                                                    <a href="extended-session.html">Session Timeout</a>
-                                                </li>
-                                                <li>
-                                                    <a href="extended-tree.html">Tree View</a>
+                                                    <a href="extended-session.html">Buku Kader Pemberdayaan Masyarakat</a>
                                                 </li>
                                             </ul>
-                                        </li>
-                                        <li><a href="forms.html">Forms</a></li>
-                                        <li><a href="charts.html">Charts</a></li>
-                                        <li><a href="#">Pages<i class="material-icons">keyboard_arrow_down</i></a>
+                                        <li><a href="#">Kelembagaan<i class="material-icons">keyboard_arrow_down</i></a>
                                             <ul>
                                                 <li>
-                                                    <a href="404.html">404</a>
+                                                    <a href="extended-select2.html">Data Anggota PKK</a>
                                                 </li>
                                                 <li>
-                                                    <a href="500.html">500</a>
+                                                    <a href="extended-datatables.html">Data Anggota LPMD</a>
                                                 </li>
                                                 <li>
-                                                    <a href="sign-in.html">Sign In</a>
+                                                    <a href="extended-blockui.html">Data Anggota Posyandu</a>
                                                 </li>
                                                 <li>
-                                                    <a href="sign-up.html">Sign Up</a>
+                                                    <a href="extended-session.html">Data Anggota LPMD</a>
                                                 </li>
+                                            </ul>
+                                        <li><a href="charts.html">User</a></li>
                                             </ul>
                                         </li>
                                     </ul>
