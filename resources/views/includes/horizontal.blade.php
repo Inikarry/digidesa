@@ -64,19 +64,19 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li><a href="#">Pembangunan<i class="material-icons">keyboard_arrow_down</i></a>
+                                        <li><a href="#" class="{{ (request()->routeIs('pembangunan.*')) ? 'active' : '' }}">Pembangunan<i class="material-icons">keyboard_arrow_down</i></a>
                                             <ul>
                                                 <li>
-                                                    <a href="extended-select2.html">Buku Rencana Kerja Pembangunan</a>
+                                                    <a href="/buku-rencana" class="{{ (request()->routeIs('pembangunan.buku_rencana')) ? 'active' : '' }}">Buku Rencana Kerja Pembangunan</a>
                                                 </li>
                                                 <li>
-                                                    <a href="extended-datatables.html">Buku Kegiatan Pembangunan</a>
+                                                    <a href="/buku-kegiatan" class="{{ (request()->routeIs('pembangunan.buku_kegiatan')) ? 'active' : '' }}">Buku Kegiatan Pembangunan</a>
                                                 </li>
                                                 <li>
-                                                    <a href="extended-blockui.html">Buku Inventaris Hasil Pembangunan</a>
+                                                    <a href="/buku-inventaris" class="{{ (request()->routeIs('pembangunan.buku_inventaris')) ? 'active' : '' }}">Buku Inventaris Hasil Pembangunan</a>
                                                 </li>
                                                 <li>
-                                                    <a href="extended-session.html">Buku Kader Pemberdayaan Masyarakat</a>
+                                                    <a href="/buku-kader" class="{{ (request()->routeIs('pembangunan.buku_kader')) ? 'active' : '' }}">Buku Kader Pemberdayaan Masyarakat</a>
                                                 </li>
                                             </ul>
                                         <li><a href="#">Kelembagaan<i class="material-icons">keyboard_arrow_down</i></a>

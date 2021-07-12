@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\UmumController;
-
+use App\Http\Controllers\PembangunanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +37,8 @@ Route::get('/buku-keputusan', [UmumController::class, 'bukuKeputusan'])->name('u
 Route::get('/buku-aparat', [UmumController::class, 'bukuAparat'])->name('umum.buku-aparat');
 Route::get('/buku-agenda', [UmumController::class, 'bukuAgenda'])->name('umum.buku-agenda');
 
+//Administrasi Pembangunan
+Route::get('/buku-rencana', [PembangunanController::class, 'bukuRencana'])->name('pembangunan.buku_rencana');
+Route::get('/buku-kegiatan', [PembangunanController::class, 'bukuKegiatan'])->name('pembangunan.buku_kegiatan');
+Route::get('/buku-inventaris', [PembangunanController::class, 'bukuInventaris'])->name('pembangunan.buku_inventaris');
+Route::get('/buku-kader', [PembangunanController::class, 'bukuKader'])->name('pembangunan.buku_kader');
