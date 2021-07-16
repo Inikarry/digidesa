@@ -79,19 +79,19 @@
                                                     <a href="/buku-kader" class="{{ (request()->routeIs('pembangunan.buku_kader')) ? 'active' : '' }}">Buku Kader Pemberdayaan Masyarakat</a>
                                                 </li>
                                             </ul>
-                                        <li><a href="#">Kelembagaan<i class="material-icons">keyboard_arrow_down</i></a>
+                                        <li><a href="#" class="{{ (request()->routeIs('kelembagaan.*')) ? 'active' : '' }}">Kelembagaan<i class="material-icons">keyboard_arrow_down</i></a>
                                             <ul>
                                                 <li>
-                                                    <a href="extended-select2.html">Data Anggota PKK</a>
+                                                    <a href="/data-anggota-pkk" class="{{ (request()->routeIs('kelembagaan.data_pkk')) ? 'active' : '' }}">Data Anggota PKK</a>
                                                 </li>
                                                 <li>
-                                                    <a href="extended-datatables.html">Data Anggota LPMD</a>
+                                                    <a href="/data-anggota-lpmd" class="{{ (request()->routeIs('kelembagaan.data_lpmd')) ? 'active' : '' }}">Data Anggota LPMD</a>
                                                 </li>
                                                 <li>
-                                                    <a href="extended-blockui.html">Data Anggota Posyandu</a>
+                                                    <a href="/data-anggota-posyandu" class="{{ (request()->routeIs('kelembagaan.data_posyandu')) ? 'active' : '' }}">Data Anggota Posyandu</a>
                                                 </li>
                                                 <li>
-                                                    <a href="extended-session.html">Data Anggota LPMD</a>
+                                                    <a href="/data-anggota-bpd" class="{{ (request()->routeIs('kelembagaan.data_bpd')) ? 'active' : '' }}">Data Anggota BPD</a>
                                                 </li>
                                             </ul>
                                         <li><a href="charts.html">User</a></li>

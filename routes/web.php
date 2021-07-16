@@ -5,6 +5,7 @@ use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\UmumController;
 use App\Http\Controllers\PembangunanController;
+use App\Http\Controllers\KelembagaanController;
 
 
 /*
@@ -47,3 +48,9 @@ Route::get('/buku-rencana', [PembangunanController::class, 'bukuRencana'])->name
 Route::get('/buku-kegiatan', [PembangunanController::class, 'bukuKegiatan'])->name('pembangunan.buku_kegiatan');
 Route::get('/buku-inventaris', [PembangunanController::class, 'bukuInventaris'])->name('pembangunan.buku_inventaris');
 Route::get('/buku-kader', [PembangunanController::class, 'bukuKader'])->name('pembangunan.buku_kader');
+
+//Adminitrasi Kelembagaan
+Route::get('/data-anggota-pkk', [KelembagaanController::class, 'dataPKK'])->name('kelembagaan.data_pkk');
+Route::get('/data-anggota-lpmd', [KelembagaanController::class, 'dataLPMD'])->name('kelembagaan.data_lpmd');
+Route::get('/data-anggota-posyandu', [KelembagaanController::class, 'dataPosyandu'])->name('kelembagaan.data_posyandu');
+Route::get('/data-anggota-bpd', [KelembagaanController::class, 'dataBPD'])->name('kelembagaan.data_bpd');
