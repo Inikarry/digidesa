@@ -13,6 +13,9 @@
         <link href="../../assets/css/dark_theme.css" rel="stylesheet">
         <link href="../../assets/css/custom.css" rel="stylesheet">
 
+        <!-- MC datepicker -->
+        <link href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" rel="stylesheet" />
+
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>

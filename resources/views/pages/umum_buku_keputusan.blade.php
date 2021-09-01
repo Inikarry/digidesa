@@ -13,7 +13,42 @@
                             <div class="col">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title">Desa Laringgi</h5>
+                                        <h5 class="card-title">Buku Keputusan</h5>
+                                        <!-- Form Tambah  -->
+                                        <div class="card-body">
+                                            <form>
+                                                <h5 class="text-center">Form Surat Keputusan</h5>
+                                                <div class="col">
+                                                    <div class="row justify-content-center">
+                                                        <div class="mb-3 col-4">
+                                                            <label class="form-label">Nomor</label>
+                                                            <input type="text" class="form-control" placeholder="Nomor SK">
+                                                        </div>
+                                                        <div class="mb-3 col-4">
+                                                            <label class="form-label">Tanggal</label>
+                                                            <input id="datepicker" type="date" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center">
+                                                        <div class="mb-3 col-4">
+                                                            <label class="form-label">Perihal</label>
+                                                            <input type="text" class="form-control" placeholder="Perihal SK">
+                                                        </div>
+                                                        <div class="mb-3 col-4">
+                                                            <label for="formFile" class="form-label">File</label>
+                                                            <input class="form-control" type="file" id="formFile">
+                                                        </div>
+                                                    </div>
+                                                </div>                                                
+                                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                                    <button type="submit" class="btn btn-primary">Tambah</button>
+                                                    <button class="btn btn-secondary">Batal</button>
+                                                </div>                                                
+                                            </form>
+                                        </div>
+                                        <!-- end of form tambah -->
                                         <table id="zero-conf" class="display" style="width:100%">
                                             <thead>
                                                 <tr>
@@ -500,4 +535,10 @@
                         </div>
                     </div>
                 </div>
+
+<script>
+    const picker = MCDatepicker.create({
+        el: '#datepicker'
+    });
+</script>
 @endsection

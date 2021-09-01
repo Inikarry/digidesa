@@ -15,3 +15,6 @@
         <script src="../../assets/js/connect.min.js"></script>
         <script src="../../assets/js/pages/datatables.js"></script>
         <script src="../../assets/js/pages/dashboard.js"></script>
+
+        <!-- MC datepicker -->
+        <script src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js"></script>
