@@ -15,3 +15,4 @@
         <script src="../../assets/js/connect.min.js"></script>
         <script src="../../assets/js/pages/datatables.js"></script>
         <script src="../../assets/js/pages/dashboard.js"></script>
+        <script src="{{asset('vendor/sweetalert/sweetalert.all.js')}}"></script>

@@ -40,13 +40,15 @@ Route::get('/buku-ktp', [PendudukController::class, 'bukuKtp'])->name('penduduk.
 //Administrasi Umum
 Route::get('/peraturan-desa', [UmumController::class, 'peraturanDesa'])->name('umum.peraturan-desa');
 Route::get('/buku-keputusan', [UmumController::class, 'bukuKeputusan'])->name('umum.buku-keputusan');
-Route::get('/buku-aparat', [UmumController::class, 'bukuAparat'])->name('umum.buku-aparat');
+Route::get('/buku-inventaris', [UmumController::class, 'bukuInventaris'])->name('umum.buku-inventaris');
+Route::get('/buku-cuti', [UmumController::class, 'bukuCuti'])->name('umum.buku-cuti');
+Route::delete('/buku-cuti/delete/{id}', [UmumController::class, 'destroyCuti'])->name('buku-cuti.delete');
+Route::post('buku-cuti/add', [UmumController::class, 'addCuti'])->name('buku-cuti.add');
 Route::get('/buku-agenda', [UmumController::class, 'bukuAgenda'])->name('umum.buku-agenda');
 
 //Administrasi Pembangunan
 Route::get('/buku-rencana', [PembangunanController::class, 'bukuRencana'])->name('pembangunan.buku_rencana');
 Route::get('/buku-kegiatan', [PembangunanController::class, 'bukuKegiatan'])->name('pembangunan.buku_kegiatan');
-Route::get('/buku-inventaris', [PembangunanController::class, 'bukuInventaris'])->name('pembangunan.buku_inventaris');
 Route::get('/buku-kader', [PembangunanController::class, 'bukuKader'])->name('pembangunan.buku_kader');
 
 //Adminitrasi Kelembagaan

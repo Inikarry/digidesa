@@ -13,16 +13,13 @@
                                                     <a href="/buku-keputusan" class="{{ (request()->routeIs('umum.buku-keputusan')) ? 'active' : '' }}">Buku Keputusan Camat</a>
                                                 </li>
                                                 <li>
-                                                    <a href="/peraturan-desa" class="{{ (request()->routeIs('umum.peraturan-desa')) ? 'active' : '' }}">Buku Inventaris</a>
+                                                    <a href="/buku-inventaris" class="{{ (request()->routeIs('umum.buku-inventaris')) ? 'active' : '' }}">Buku Inventaris</a>
                                                 </li>
                                                 <li>
-                                                    <a href="/buku-aparat" class="{{ (request()->routeIs('umum.buku-aparat')) ? 'active' : '' }}">Buku Cuti</a>
+                                                    <a href="/buku-cuti" class="{{ (request()->routeIs('umum.buku-cuti')) ? 'active' : '' }}">Buku Cuti</a>
                                                 </li>
                                                 <li>
                                                     <a href="/buku-agenda" class="{{ (request()->routeIs('umum.buku-agenda')) ? 'active' : '' }}">Buku Agenda</a>
-                                                </li>
-                                                <li>
-                                                    <a href="/buku-agenda" class="{{ (request()->routeIs('umum.buku-agenda')) ? 'active' : '' }}">Buku Rencana Kerja</a>
                                                 </li>
                                             </ul>
                                         </li>

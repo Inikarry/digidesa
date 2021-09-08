@@ -20,6 +20,8 @@ class CreateSuratMasukTable extends Migration
             $table->string('masuk_perihal')->nullable();
             $table->string('masuk_foto')->nullable();
             $table->date('masuk_tanggal')->nullable();
+            $table->string('masuk_petunjuk')->nullable();
+            $table->string('masuk_paket')->nullable();
             $table->timestamps();
         });
     }

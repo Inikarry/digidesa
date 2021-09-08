@@ -24,7 +24,7 @@ class CreateDaftarPangkatTable extends Migration
             $table->date('pangkat_tmt')->nullable();
             $table->string('jabatan_nama')->nullable();
             $table->date('jabatan_tmt')->nullable();
-            $table->string('abatan_eselon')->nullable();
+            $table->string('jabatan_eselon')->nullable();
             $table->string('masa_kerja_tahun')->nullable();
             $table->string('masa_kerja_bulab')->nullable();
             $table->string('diklat_nama')->nullable();
