@@ -118,15 +118,25 @@
         serverSide  : true,
         ajax: "{{ route('umum.buku-cuti') }}",
         columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-            {data: 'cuti_tanggal', name: 'cuti_tanggal'},
-            {data: 'cuti_nama', name: 'cuti_nama'},
-            {data: 'nip', name: 'nip'},
-            {data: 'cuti_mulai', name: 'cuti_mulai'},
-            {data: 'cuti_selesai', name: 'cuti_selesai'},
-            {data: 'cuti_jenis', name: 'cuti_jenis'},
-            {data: 'keterangan', name: 'keterangan',  orderable: false},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
+            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, width: '2%'},
+            {data: 'cuti_tanggal', name: 'cuti_tanggal', width: '4%'},
+            {data: 'cuti_nama', name: 'cuti_nama', width: '21%'},
+            {data: 'nip', name: 'nip', width: '2%'},
+            {data: 'cuti_mulai', name: 'cuti_mulai', width: '4%'},
+            {data: 'cuti_selesai', name: 'cuti_selesai', width: '4%'},
+            {data: 'cuti_jenis', name: 'cuti_jenis', width: '10%'},
+            {data: 'keterangan', name: 'keterangan',  orderable: false, width: '20%'},
+            {data: 'action', name: 'action', orderable: false, searchable: false, width: '15%'},
+        ],
+        columnDefs: [
+            {
+                targets: [0,1,4,5,8],
+                className: 'text-center'
+            },
+            {
+                targets: [2,3,6,7],
+                className: 'text-left'
+            }
         ],
         order: [ 1 , 'desc'],
     });

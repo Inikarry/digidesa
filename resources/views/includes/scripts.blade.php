@@ -17,4 +17,3 @@
         <script src="../../assets/js/pages/dashboard.js"></script>
 
         <script src="{{asset('vendor/sweetalert/sweetalert.all.js')}}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js"></script>

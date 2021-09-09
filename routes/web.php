@@ -27,9 +27,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('pages.index');
 })->name('dashboard');
 
-Route::get('/buku-apb-desa', [KeuanganController::class,'apbdesa'])->name('keuangan.apbdesa');
-Route::get('/buku-rab-desa', [KeuanganController::class,'rabdesa'])->name('keuangan.rabdesa');
-Route::get('/buku-kaspemkeg-desa', [KeuanganController::class,'kaspemkegdesa'])->name('keuangan.kaspemkegdesa');
 //Administrasi Penduduk
 Route::get('/buku-induk-penduduk', [PendudukController::class, 'bukuInduk'])->name('penduduk.buku_induk_penduduk');
 Route::get('/buku-mutasi', [PendudukController::class, 'bukuMutasi'])->name('penduduk.buku_mutasi');
@@ -39,17 +36,17 @@ Route::get('/buku-ktp', [PendudukController::class, 'bukuKtp'])->name('penduduk.
 
 //Administrasi Umum
 Route::get('/peraturan-desa', [UmumController::class, 'peraturanDesa'])->name('umum.peraturan-desa');
+
 Route::get('/buku-keputusan', [UmumController::class, 'bukuKeputusan'])->name('umum.buku-keputusan');
+Route::post('buku-keputusan/add', [UmumController::class, 'addKeputusan'])->name('buku-keputusan.add');
+
 Route::get('/buku-inventaris', [UmumController::class, 'bukuInventaris'])->name('umum.buku-inventaris');
+
 Route::get('/buku-cuti', [UmumController::class, 'bukuCuti'])->name('umum.buku-cuti');
 Route::delete('/buku-cuti/delete/{id}', [UmumController::class, 'destroyCuti'])->name('buku-cuti.delete');
 Route::post('buku-cuti/add', [UmumController::class, 'addCuti'])->name('buku-cuti.add');
-Route::get('/buku-agenda', [UmumController::class, 'bukuAgenda'])->name('umum.buku-agenda');
 
-//Administrasi Pembangunan
-Route::get('/buku-rencana', [PembangunanController::class, 'bukuRencana'])->name('pembangunan.buku_rencana');
-Route::get('/buku-kegiatan', [PembangunanController::class, 'bukuKegiatan'])->name('pembangunan.buku_kegiatan');
-Route::get('/buku-kader', [PembangunanController::class, 'bukuKader'])->name('pembangunan.buku_kader');
+Route::get('/buku-agenda', [UmumController::class, 'bukuAgenda'])->name('umum.buku-agenda');
 
 //Adminitrasi Kelembagaan
 Route::get('/data-anggota-pkk', [KelembagaanController::class, 'dataPKK'])->name('kelembagaan.data_pkk');

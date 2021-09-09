@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Inventaris;
 use App\Models\Cuti;
+use App\Models\Keputusan;
 use DataTables;
 use Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,8 +33,74 @@ class UmumController extends Controller
         return view('pages.umum_peraturan_desa');
     }
 
-    public function bukuKeputusan() {
-        return view('pages.umum_buku_keputusan');
+    public function bukuKeputusan(Request $request) {
+        $data = Keputusan::select('*');
+        if ($request->ajax()) {
+            
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function(Keputusan $keputusan){
+                        $btn = '
+                            <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$keputusan->id.'" data-url="/buku-keputusan/edit/'.$keputusan->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
+                            <a type="button" class="delete_cuti btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$keputusan->id.'" data-url="/buku-keputusan/delete/'.$keputusan->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
+                        ';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->editColumn('sk_tanggal', function (Keputusan $keputusan) {
+                        return Carbon::createFromFormat('Y-m-d', $keputusan->sk_tanggal)->format('d M Y');
+                    })
+                    ->filterColumn('sk_tanggal', function ($query, $keyword) {
+                        $query->whereRaw("DATE_FORMAT(sk_tanggal,'%d %M %Y') like ?", ["%$keyword%"]);
+                    })
+                    ->editColumn('sk_foto', function (Keputusan $keputusan) {
+                        if ($keputusan->sk_foto == ''){
+                            return "Tidak ada foto/file";
+                        }else{
+                            return $keputusan->sk_foto;
+                        }
+                    })
+                    ->toJson();
+        }
+        return view('pages.umum.keputusan');
+    }
+
+    public function addKeputusan(Request $request){
+        $messages = [
+            'sk_nomor.required'            => 'Nomor Tidak Boleh Kosong!',
+            'sk_tanggal.required'          => 'Tanggal Tidak Boleh Kosong',
+            'sk_perihal.required'          => 'Perihal Tidak Boleh Kosong!',
+            ];
+
+        $validator = \Validator::make($request->all(), [
+            'sk_perihal'      => ['required'],
+            'sk_tanggal'     => ['required'],
+            'sk_nomor'      => ['required'],
+        ], $messages);
+
+        if ($validator->fails()) {
+            $data['success'] = 0;
+            $data['error'] = $validator->errors()->all();
+        }else {
+
+            if ($image = $request->file('image')) {
+                $destinationPath = 'file/sk';
+                $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+                $image->move($destinationPath, $profileImage);
+            }else{
+                $profileImage = '';
+            }
+
+            $keputusan = new Keputusan;
+            $keputusan->sk_nomor        = $request->sk_nomor;
+            $keputusan->sk_tanggal      = $request->sk_tanggal;
+            $keputusan->sk_perihal      = $request->sk_perihal;
+            $keputusan->sk_foto         = $profileImage;
+            $keputusan->save();
+
+            $data['success'] = 1;
+        }
+        return response()->json($data);
     }
 
     public function bukuInventaris() {
