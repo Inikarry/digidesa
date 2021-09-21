@@ -49,13 +49,7 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="cuti_jenis">Jenis Cuti :</label>
-                                    <select name="cuti_jenis" id="cuti_jenis" class="form-control custom-select">
-                                        <option value="" selected disabled>--Pilih Jenis Cuti--</option>
-                                        <option value="Cuti Tahunan">Cuti Tahunan</option>
-                                        <option value="Cuti Tahunan">Cuti Menikah</option>
-                                        <option value="Cuti Tahunan">Cuti Hamil</option>
-                                        <option value="Cuti Tahunan">Cuti .....</option>
-                                    </select>
+                                    <input type="text" class="form-control" id="cuti_jenis" placeholder="Macam Cuti">
                                 </div>
                                 <div class="form-group col-md-8">
                                     <label for="keterangan">Keterangan :</label>

@@ -4,7 +4,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Umum</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Buku Keputusan</li>
+            <li class="breadcrumb-item active" aria-current="page">Buku Agenda</li>
         </ol>
     </nav>
 </div>
@@ -13,7 +13,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Buku Keputusan</h5>
+                    <h5 class="card-title">Agenda Surat Masuk</h5>
                     <div class="custom-control custom-switch">
                         <input type="checkbox" onchange="create()" class="custom-control-input" id="switchCreate">
                         <label class="custom-control-label" for="switchCreate">Tambah Data</label>
@@ -21,17 +21,29 @@
                     <!-- Form Tambah  -->
                     <div class="card-body" id="createForm">
                         <form>
-                            <h5 class="text-center">Form Surat Keputusan</h5>
+                            <h5 class="text-center">Form Surat Masuk</h5>
                             <meta name="csrf-token-create" content="{{ csrf_token() }}">
                             <div class="col">
                                 <div class="row justify-content-center">
                                     <div class="mb-3 col-4">
-                                        <label class="form-label">Nomor</label>
-                                        <input type="text" class="form-control" id="sk_nomor" placeholder="Nomor SK">
+                                        <label class="form-label">Nomor Berkas</label>
+                                        <input type="text" class="form-control" id="masuk_berkas" placeholder="Nomor Berkas">
                                     </div>
                                     <div class="mb-3 col-4">
+                                        <label class="form-label">Alamat Pengirim</label>
+                                        <input type="text" id="masuk_pengirim" class="form-control" placeholder="Alamat Pengirim">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row justify-content-center">
+                                    <div class="mb-3 col-4">
                                         <label class="form-label">Tanggal</label>
-                                        <input type="date" id="sk_tanggal" class="form-control">
+                                        <input type="date" class="form-control" id="masuk_tanggal">
+                                    </div>
+                                    <div class="mb-3 col-4">
+                                        <label for="formFile" class="form-label">Nomor</label>
+                                        <input class="form-control" type="text" id="masuk_nomor" placeholder="Nomor">
                                     </div>
                                 </div>
                             </div>
@@ -39,16 +51,28 @@
                                 <div class="row justify-content-center">
                                     <div class="mb-3 col-4">
                                         <label class="form-label">Perihal</label>
-                                        <input type="text" class="form-control" id="sk_perihal" placeholder="Perihal SK">
+                                        <input type="text" class="form-control" id="masuk_perihal" placeholder="Perihal">
                                     </div>
                                     <div class="mb-3 col-4">
-                                        <label for="formFile" class="form-label">File</label>
+                                        <label for="image" class="form-label">File</label>
                                         <input class="form-control" type="file" id="image">
                                     </div>
                                 </div>
-                            </div>                                                
+                            </div>    
+                            <div class="col">
+                                <div class="row justify-content-center">
+                                    <div class="mb-3 col-4">
+                                        <label class="form-label">Nomor Petunjuk</label>
+                                        <input type="text" class="form-control" id="masuk_petunjuk" placeholder="Nomor Petunjuk">
+                                    </div>
+                                    <div class="mb-3 col-4">
+                                        <label class="form-label">Nomor Paket</label>
+                                        <input type="text" id="masuk_paket" class="form-control" placeholder="Nomor Paket">
+                                    </div>
+                                </div>
+                            </div>                                            
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <button type="submit" data-url="{{ route('buku-keputusan.add') }}" class="btn btn-outline-primary addSK">Tambah</button>
+                                <button type="submit" data-url="{{ route('buku-masuk.add') }}" class="btn btn-outline-primary addMasuk">Tambah</button>
                             </div>                                                
                         </form>
                     </div>
@@ -57,12 +81,19 @@
                     <meta name="csrf-token-delete" content="{{ csrf_token() }}">
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Nomor Surat</th>
+                                <th rowspan="2" style="vertical-align:middle">No.</th>
+                                <th rowspan="2" style="vertical-align:middle">No. Berkas</th>
+                                <th rowspan="2" style="vertical-align:middle">Pengirim</th>
+                                <th colspan="3" style="text-align:center">Dari Surat Masuk</th>
+                                <th rowspan="2" style="vertical-align:middle">No. Petunjuk</th>
+                                <th rowspan="2" style="vertical-align:middle">No. Paket</th>
+                                <th rowspan="2" style="vertical-align:middle">File/Foto</th>
+                                <th rowspan="2" style="vertical-align:middle">Aksi</th>
+                            </tr>
+                            <tr>
                                 <th>Tanggal</th>
-                                <th>Tentang/Perihal</th>
-                                <th>Foto/File</th>
-                                <th>Aksi</th>
+                                <th>Nomor</th>
+                                <th>Perihal</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -72,6 +103,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
 @push('addon-script')
@@ -99,31 +131,33 @@
         },
         processing  : true,
         serverSide  : true,
-        ajax: "{{ route('umum.buku-keputusan') }}",
+        ajax: "{{ route('umum.buku-masuk') }}",
         columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, width: '5%'},
-            {data: 'sk_nomor', name: 'sk_nomor', width: '15%'},
-            {data: 'sk_tanggal', name: 'sk_tanggal', width: '15%'},
-            {data: 'sk_perihal', name: 'sk_perihal', width: '30%'},
-            {data: 'foto', name: 'sk_foto', orderable: false, searchable:false, width: '20%'},
-            {data: 'action', name: 'action', orderable: false, searchable: false, width: '15%'},
+            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+            {data: 'masuk_berkas', name: 'masuk_berkas'},
+            {data: 'masuk_pengirim', name: 'masuk_pengirim'},
+            {data: 'masuk_tanggal', name: 'masuk_tanggal'},
+            {data: 'masuk_nomor', name: 'masuk_nomor'},
+            {data: 'masuk_perihal', name: 'masuk_perihal'},
+            {data: 'masuk_petunjuk', name: 'masuk_petunjuk'},
+            {data: 'masuk_paket', name: 'masuk_paket'},
+            {data: 'foto', name: 'foto', orderable: false, searchable:false},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         columnDefs: [
             {
-                targets: [0,2,4,5],
+                targets: [0,1,3,4,6,7],
                 className: 'text-center'
             },
             {
-                targets: [1,3],
+                targets: [2,3,5],
                 className: 'text-left'
             }
         ],
-        order: [ 2 , 'desc'],
+        order: [ 3 , 'desc'],
     });
 
-    });
-
-    $('.data-table').on('click','.delete_sk',function(e){
+    $('.data-table').on('click','.delete_masuk',function(e){
         e.preventDefault();
         var id = $(this).data('id');
         var url = $(this).data('url');
@@ -163,20 +197,28 @@
     });
 
     $(document).ready(function() {
-        $('.addSK').click(function(e){
+        $('.addMasuk').click(function(e){
             e.preventDefault();
             var url = $(this).data('url');
-            var sk_nomor = $('#sk_nomor').val();
-            var sk_tanggal = $('#sk_tanggal').val();
-            var sk_perihal = $('#sk_perihal').val();
+            var masuk_berkas = $('#masuk_berkas').val();
+            var masuk_pengirim = $('#masuk_pengirim').val();
+            var masuk_tanggal = $('#masuk_tanggal').val();
+            var masuk_nomor = $('#masuk_nomor').val();
+            var masuk_perihal = $('#masuk_perihal').val();
+            var masuk_petunjuk = $('#masuk_petunjuk').val();
+            var masuk_paket = $('#masuk_paket').val();
 
             var formData = new FormData()
             if($('#image').val() !== '') {
                 formData.append('image', $('#image')[0].files[0])
             }
-            formData.append('sk_nomor', sk_nomor);
-            formData.append('sk_tanggal', sk_tanggal);
-            formData.append('sk_perihal', sk_perihal);
+            formData.append('masuk_berkas', masuk_berkas);
+            formData.append('masuk_pengirim', masuk_pengirim);
+            formData.append('masuk_tanggal', masuk_tanggal);
+            formData.append('masuk_nomor', masuk_nomor);
+            formData.append('masuk_perihal', masuk_perihal);
+            formData.append('masuk_petunjuk', masuk_petunjuk);
+            formData.append('masuk_paket', masuk_paket);
 
             $.ajaxSetup({
                 headers: {
@@ -216,5 +258,8 @@
             });
         })
     });
+
+});
+
 </script>
 @endpush

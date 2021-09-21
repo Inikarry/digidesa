@@ -16,6 +16,7 @@ class CreateSuratMasukTable extends Migration
         Schema::create('surat_masuk', function (Blueprint $table) {
             $table->id();
             $table->string('masuk_nomor')->nullable();
+            $table->string('masuk_berkas')->nullable();
             $table->string('masuk_pengirim')->nullable();
             $table->string('masuk_perihal')->nullable();
             $table->string('masuk_foto')->nullable();

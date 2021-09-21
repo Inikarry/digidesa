@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Inventaris;
 use App\Models\Cuti;
 use App\Models\Keputusan;
+use App\Models\Masuk;
 use DataTables;
 use Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,11 +29,7 @@ class UmumController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
-    public function peraturanDesa() {
-        return view('pages.umum_peraturan_desa');
-    }
-
+    //Buku Keputusan
     public function bukuKeputusan(Request $request) {
         $data = Keputusan::select('*');
         if ($request->ajax()) {
@@ -42,27 +39,37 @@ class UmumController extends Controller
                     ->addColumn('action', function(Keputusan $keputusan){
                         $btn = '
                             <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$keputusan->id.'" data-url="/buku-keputusan/edit/'.$keputusan->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
-                            <a type="button" class="delete_cuti btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$keputusan->id.'" data-url="/buku-keputusan/delete/'.$keputusan->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
+                            <a type="button" class="delete_sk btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$keputusan->id.'" data-url="/buku-keputusan/delete/'.$keputusan->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
                         ';
                         return $btn;
                     })
-                    ->rawColumns(['action'])
                     ->editColumn('sk_tanggal', function (Keputusan $keputusan) {
                         return Carbon::createFromFormat('Y-m-d', $keputusan->sk_tanggal)->format('d M Y');
                     })
                     ->filterColumn('sk_tanggal', function ($query, $keyword) {
                         $query->whereRaw("DATE_FORMAT(sk_tanggal,'%d %M %Y') like ?", ["%$keyword%"]);
                     })
-                    ->editColumn('sk_foto', function (Keputusan $keputusan) {
+                    ->addColumn('foto', function (Keputusan $keputusan) {
                         if ($keputusan->sk_foto == ''){
                             return "Tidak ada foto/file";
                         }else{
-                            return $keputusan->sk_foto;
+                            $btn = '
+                            <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" href="/buku-keputusan/download/'.$keputusan->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">save_alt</i></a>
+                        ';
+                        return $btn;
                         }
                     })
+                    ->rawColumns(['action', 'foto'])
                     ->toJson();
         }
         return view('pages.umum.keputusan');
+    }
+
+    public function downloadSK($id){
+        $data = Keputusan::find($id);
+        $name = $data->sk_foto;
+
+        return response()->download(public_path("file/sk/$name"));
     }
 
     public function addKeputusan(Request $request){
@@ -85,7 +92,7 @@ class UmumController extends Controller
 
             if ($image = $request->file('image')) {
                 $destinationPath = 'file/sk';
-                $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+                $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
                 $image->move($destinationPath, $profileImage);
             }else{
                 $profileImage = '';
@@ -103,10 +110,22 @@ class UmumController extends Controller
         return response()->json($data);
     }
 
+    public function destroySK($id){
+        $data = Keputusan::find($id);
+        $foto = $data->sk_foto;
+
+        if($foto !== ''){
+            \File::delete(public_path("file/sk/$foto"));
+        }
+        $data->delete();
+    }
+
+    //Buku Inventaris
     public function bukuInventaris() {
         return view('pages.umum.inventaris');
     }
 
+    //Buku Cuti
     public function bukuCuti(Request $request) {
         $data = Cuti::select('*');
         if ($request->ajax()) {
@@ -183,8 +202,100 @@ class UmumController extends Controller
         Cuti::find($id)->delete();
     }
     
-    public function bukuAgenda() {
-        return view('pages.umum_buku_agenda');
+    //Buku Masuk
+    public function bukuMasuk(Request $request) {
+        $data = Masuk::select('*');
+        if ($request->ajax()) {
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function(Masuk $masuk){
+                        $btn = '
+                            <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$masuk->id.'" data-url="/buku-masuk/edit/'.$masuk->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
+                            <a type="button" class="delete_masuk btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$masuk->id.'" data-url="/buku-masuk/delete/'.$masuk->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
+                        ';
+                        return $btn;
+                    })
+                    ->editColumn('masuk_tanggal', function (Masuk $masuk) {
+                        return Carbon::createFromFormat('Y-m-d', $masuk->masuk_tanggal)->format('d M Y');
+                    })
+                    ->filterColumn('masuk_tanggal', function ($query, $keyword) {
+                        $query->whereRaw("DATE_FORMAT(masuk_tanggal,'%d %M %Y') like ?", ["%$keyword%"]);
+                    })
+                    ->addColumn('foto', function (Masuk $masuk) {
+                        if ($masuk->masuk_foto == ''){
+                            return "Tidak ada foto/file";
+                        }else{
+                            $btn = '
+                            <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" href="/buku-masuk/download/'.$masuk->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">save_alt</i></a>
+                        ';
+                        return $btn;
+                        }
+                    })
+                    ->rawColumns(['action', 'foto'])
+                    ->toJson();
+        }
+        return view('pages.umum.masuk');
+    }
+
+    public function downloadMasuk($id){
+        $data = Masuk::find($id);
+        $name = $data->masuk_foto;
+
+        return response()->download(public_path("file/masuk/$name"));
+    }
+
+    public function addMasuk(Request $request){
+        $messages = [
+            'masuk_pengirim.required'            => 'Pengirim Tidak Boleh Kosong!',
+            'masuk_nomor.required'            => 'Nomor Tidak Boleh Kosong!',
+            'masuk_tanggal.required'          => 'Tanggal Tidak Boleh Kosong',
+            'masuk_perihal.required'          => 'Perihal Tidak Boleh Kosong!',
+            ];
+
+        $validator = \Validator::make($request->all(), [
+            'masuk_perihal'     => ['required'],
+            'masuk_nomor'       => ['required'],
+            'masuk_tanggal'     => ['required'],
+            'masuk_pengirim'    => ['required'],
+        ], $messages);
+
+        if ($validator->fails()) {
+            $data['success'] = 0;
+            $data['error'] = $validator->errors()->all();
+        }else {
+
+            if ($image = $request->file('image')) {
+                $destinationPath = 'file/masuk';
+                $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
+                $image->move($destinationPath, $profileImage);
+            }else{
+                $profileImage = '';
+            }
+
+            $masuk = new Masuk;
+            $masuk->masuk_berkas       = $request->masuk_berkas;
+            $masuk->masuk_pengirim     = $request->masuk_pengirim;
+            $masuk->masuk_nomor        = $request->masuk_nomor;
+            $masuk->masuk_tanggal      = $request->masuk_tanggal;
+            $masuk->masuk_perihal      = $request->masuk_perihal;
+            $masuk->masuk_petunjuk     = $request->masuk_petunjuk;
+            $masuk->masuk_paket        = $request->masuk_paket;
+            $masuk->masuk_foto         = $profileImage;
+            $masuk->save();
+
+            $data['success'] = 1;
+        }
+        return response()->json($data);
+    }
+
+    public function destroyMasuk($id){
+        $data = Masuk::find($id);
+        $foto = $data->masuk_foto;
+
+        if($foto !== ''){
+            \File::delete(public_path("file/masuk/$foto"));
+        }
+        $data->delete();
     }
 
     public function create()

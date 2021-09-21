@@ -19,7 +19,10 @@
                                 <a href="/buku-cuti" class="{{ (request()->routeIs('umum.buku-cuti')) ? 'active' : '' }}">Buku Cuti</a>
                             </li>
                             <li>
-                                <a href="/buku-agenda" class="{{ (request()->routeIs('umum.buku-agenda')) ? 'active' : '' }}">Buku Agenda</a>
+                                <a href="/buku-masuk" class="{{ (request()->routeIs('umum.buku-masuk')) ? 'active' : '' }}">Buku Agenda Masuk</a>
+                            </li>
+                            <li>
+                                <a href="/buku-keluar" class="{{ (request()->routeIs('umum.buku-keluar')) ? 'active' : '' }}">Buku Agenda Keluar</a>
                             </li>
                         </ul>
                     </li>
@@ -37,7 +40,7 @@
                         </ul>
                     </li>
                     <li><a href="#" class="{{ (request()->routeIs('kelembagaan.*')) ? 'active' : '' }}">Kelembagaan<i class="material-icons">keyboard_arrow_down</i></a>
-                        <ul>
+                         <ul>
                             <li>
                                 <a href="/data-anggota-pkk" class="{{ (request()->routeIs('kelembagaan.data_pkk')) ? 'active' : '' }}">Daftar Urut Kepangkatan</a>
                             </li>
