@@ -58,7 +58,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Nomor</th>
+                                <th>Nomor Surat</th>
                                 <th>Tanggal</th>
                                 <th>Tentang/Perihal</th>
                                 <th>Foto/File</th>
@@ -66,6 +66,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                        </tbody>
                     </table>
                 </div>
             </div>
