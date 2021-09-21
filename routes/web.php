@@ -50,6 +50,7 @@ Route::get('/buku-agenda', [UmumController::class, 'bukuAgenda'])->name('umum.bu
 
 //Adminitrasi Kelembagaan
 Route::get('/data-anggota-pkk', [KelembagaanController::class, 'dataPKK'])->name('kelembagaan.data_pkk');
-Route::get('/data-anggota-lpmd', [KelembagaanController::class, 'dataLPMD'])->name('kelembagaan.data_lpmd');
+Route::get('/buku-gaji', [KelembagaanController::class, 'bukuGaji'])->name('kelembagaan.buku-gaji');
 Route::get('/data-anggota-posyandu', [KelembagaanController::class, 'dataPosyandu'])->name('kelembagaan.data_posyandu');
-Route::get('/data-anggota-bpd', [KelembagaanController::class, 'dataBPD'])->name('kelembagaan.data_bpd');
+Route::get('/buku-rekomendasimasuk', [KelembagaanController::class, 'bukuRekomendasimasuk'])->name('kelembagaan.buku-rekomendasimasuk');
+Route::get('/buku-rekomendasikeluar', [KelembagaanController::class, 'bukuRekomendasikeluar'])->name('kelembagaan.buku-rekomendasikeluar');
