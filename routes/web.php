@@ -57,7 +57,9 @@ Route::get('/buku-masuk/download/{id}', [UmumController::class, 'downloadMasuk']
 //Buku Agenda Keluar
 Route::get('/buku-keluar', [UmumController::class, 'bukuKeluar'])->name('umum.buku-keluar');
 Route::post('buku-keluar/add', [UmumController::class, 'addKeluar'])->name('buku-keluar.add');
-
+Route::get('/buku-keluar/download/{id}', [UmumController::class, 'downloadKeluar'])->name('buku-keluar.download');
+Route::delete('/buku-keluar/delete/{id}', [UmumController::class, 'destroyKeluar'])->name('buku-keluar.delete');
+Route::put('/buku-keluar/edit/{id}', [UmumController::class, 'updateKeluar'])->name('buku-keluar.update');
 /** Adminitrasi Kelembagaan **/
 Route::get('/data-anggota-pkk', [KelembagaanController::class, 'dataPKK'])->name('kelembagaan.data_pkk');
 Route::get('/buku-gaji', [KelembagaanController::class, 'bukuGaji'])->name('kelembagaan.buku-gaji');

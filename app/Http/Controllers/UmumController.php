@@ -525,10 +525,46 @@ class UmumController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function(Keluar $keluar){
                         $btn = '
-                            <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$keluar->id.'" data-url="/buku-keluar/edit/'.$keluar->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
-                            <a type="button" class="delete_masuk btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$keluar->id.'" data-url="/buku-keluar/delete/'.$keluar->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
+                            <a type="button" class="edit_keluar btn btn-danger btn-xs" style="height: 30px; width: 30px"
+                                data-id="'.$keluar->id.'"
+                                data-berkas="'.$keluar->keluar_berkas.'"
+                                data-penerima="'.$keluar->keluar_tujuan.'"
+                                data-tanggal="'.$keluar->keluar_tanggal.'"
+                                data-perihal="'.$keluar->keluar_perihal.'"
+                                data-petunjuk="'.$keluar->keluar_petunjuk.'"
+                                data-nomor="'.$keluar->keluar_nomor.'"
+                                data-foto="'.$keluar->keluar_foto.'"
+                            ><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
+                            <a type="button" class="delete_keluar btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$keluar->id.'" data-url="/buku-keluar/delete/'.$keluar->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
                         ';
                         return $btn;
+                    })
+                    ->editColumn('keluar_tanggal', function (Keluar $keluar) {
+                        return Carbon::createFromFormat('Y-m-d', $keluar->keluar_tanggal)->format('d M Y');
+                    })
+                    ->editColumn('keluar_berkas', function (Keluar $keluar) {
+                        if($keluar->keluar_berkas == ''){
+                            return "---";
+                        }else{
+                            return $keluar->keluar_berkas;
+                        }
+                    })
+                    ->editColumn('keluar_petunjuk', function (Keluar $keluar) {
+                        if($keluar->keluar_petunjuk == ''){
+                            return "---";
+                        }else{
+                            return $keluar->keluar_petunjuk;
+                        }
+                    })
+                    ->editColumn('keluar_nomor', function (Keluar $keluar) {
+                        if($keluar->keluar_nomor == ''){
+                            return "---";
+                        }else{
+                            return $keluar->keluar_nomor;
+                        }
+                    })
+                    ->filterColumn('keluar_tanggal', function ($query, $keyword) {
+                        $query->whereRaw("DATE_FORMAT(keluar_tanggal,'%d %M %Y') like ?", ["%$keyword%"]);
                     })
                     ->addColumn('foto', function (Keluar $keluar) {
                         if ($keluar->keluar_foto == ''){
@@ -545,12 +581,14 @@ class UmumController extends Controller
         }
         return view('pages.umum.keluar');
     }
+
     public function downloadKeluar($id){
         $data = Keluar::find($id);
         $name = $data->keluar_foto;
 
         return response()->download(public_path("file/keluar/$name"));
     }
+
     public function addKeluar(Request $request){
         $messages = [
             'keluar_penerima.required'           => 'Penerima Tidak Boleh Kosong!',
@@ -593,6 +631,90 @@ class UmumController extends Controller
         }
         return response()->json($data);
     }
+
+    public function destroyKeluar($id){
+        $data = Keluar::find($id);
+        $foto = $data->keluar_foto;
+
+        if($foto !== ''){
+            \File::delete(public_path("file/keluar/$foto"));
+        }
+        $data->delete();
+    }
+
+    public function updateKeluar(Request $request, $id){
+        $messages = [
+            'uPenerima.required'         => 'Penerima Tidak Boleh Kosong!',
+            'uNomor.required'            => 'Nomor Tidak Boleh Kosong!',
+            'uTanggal.required'          => 'Tanggal Tidak Boleh Kosong',
+            'uPerihal.required'          => 'Perihal Tidak Boleh Kosong!',
+            ];
+
+        $validator = \Validator::make($request->all(), [
+            'uPerihal'     => ['required'],
+            'uNomor'       => ['required'],
+            'uTanggal'     => ['required'],
+            'uPenerima'    => ['required'],
+        ], $messages);
+
+        if ($validator->fails()) {
+            $data['success'] = 0;
+            $data['error'] = $validator->errors()->all();
+        }else {
+            $keluar = Keluar::find($id);
+            if($keluar->keluar_foto == ''){
+                if ($image = $request->file('uImage')) {
+                    $destinationPath = 'file/keluar';
+                    $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
+                    $image->move($destinationPath, $profileImage);
+                }else{
+                    $profileImage = '';
+                }
+                $keluar->update([
+                    'keluar_berkas'                  => $request->uBerkas,
+                    'keluar_tujuan'                => $request->uPenerima,
+                    'keluar_tanggal'                 => $request->uTanggal,
+                    'keluar_perihal'                 => $request->uPerihal,
+                    'keluar_petunjuk'                => $request->uPetunjuk,
+                    'keluar_nomor'                   => $request->uNomor,
+                    'keluar_foto'                    => $profileImage,
+                ]);
+            }else{
+                if($request->deleteImage == "true"){
+                    \File::delete(public_path("file/keluar/$keluar->keluar_foto"));
+
+                    if ($image = $request->file('uImage')) {
+                        $destinationPath = 'file/keluar';
+                        $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
+                        $image->move($destinationPath, $profileImage);
+                    }else{
+                        $profileImage = '';
+                    }
+                    $keluar->update([
+                        'keluar_berkas'                  => $request->uBerkas,
+                        'keluar_tujuan'                => $request->uPenerima,
+                        'keluar_tanggal'                 => $request->uTanggal,
+                        'keluar_perihal'                 => $request->uPerihal,
+                        'keluar_petunjuk'                => $request->uPetunjuk,
+                        'keluar_nomor'                   => $request->uNomor,
+                        'keluar_foto'                    => $profileImage,
+                    ]);
+                }else{
+                    $keluar->update([
+                        'keluar_berkas'                  => $request->uBerkas,
+                        'keluar_tujuan'                => $request->uPenerima,
+                        'keluar_tanggal'                 => $request->uTanggal,
+                        'keluar_perihal'                 => $request->uPerihal,
+                        'keluar_petunjuk'                => $request->uPetunjuk,
+                        'keluar_nomor'                   => $request->uNomor,
+                ]);
+                }
+            }
+            $data['success'] = 1;
+        }
+        return response()->json($data);
+    }
+
     public function create()
     {
         //
