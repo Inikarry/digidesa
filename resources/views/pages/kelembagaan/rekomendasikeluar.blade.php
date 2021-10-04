@@ -17,7 +17,7 @@
                      <table id="rekomendasiTable" class="table table-bordered" style="width:100%">
                         <thead>
                             <tr>
-                                <th>No</th>
+                                <th style="vertical-align:middle">No</th>
                                 <th>nomor Surat Permintaan</th>
                                 <th>Tanggal</th>
                                 <th>Alamat Tujuan</th>
@@ -40,30 +40,21 @@
      $(function () {
     var table = $('#rekomendasiTable').DataTable({
         initComplete: function (settings, json) {  
-            $(".data-table").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");            
+             $("#rekomendasiTable").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");            
         },
         processing  : true,
         serverSide  : true,
-        ajax: "{{ route('umum.buku-keputusan') }}",
+        ajax: "{{ route('kelembagaan.buku-rekomendasikeluar') }}",
         columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, width: '5%'},
-            {data: 'sk_nomor', name: 'sk_nomor', width: '15%'},
-            {data: 'sk_tanggal', name: 'sk_tanggal', width: '15%'},
-            {data: 'sk_perihal', name: 'sk_perihal', width: '30%'},
-            {data: 'sk_foto', name: 'sk_foto', width: '20%'},
-            {data: 'action', name: 'action', orderable: false, searchable: false, width: '15%'},
+            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+            {data: 'id_masuk', name: 'id_masuk'},
+            {data: 'rk_tanggal', name: 'rk_tanggal'},
+            {data: 'rk_tujuan', name: 'rk_tujuan'},
+            {data: 'rk_keterangan', name: 'rk_keterangan'},
+            {data: 'rm_foto', name: 'rm_foto'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
-        columnDefs: [
-            {
-                targets: [0,2,4,5],
-                className: 'text-center'
-            },
-            {
-                targets: [1,3],
-                className: 'text-left'
-            }
-        ],
-        order: [ 2 , 'desc'],
+        order: [ 1 , 'desc'],
     });
 
     });
