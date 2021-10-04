@@ -39,7 +39,13 @@ class UmumController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function(Keputusan $keputusan){
                         $btn = '
-                            <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$keputusan->id.'" data-url="/buku-keputusan/edit/'.$keputusan->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
+                            <a type="button" class="edit_sk btn btn-danger btn-xs" style="height: 30px; width: 30px"
+                            data-id="'.$keputusan->id.'"
+                            data-nomor="'.$keputusan->sk_nomor.'"
+                            data-tanggal="'.$keputusan->sk_tanggal.'"
+                            data-perihal="'.$keputusan->sk_perihal.'"
+                            data-foto="'.$keputusan->sk_foto.'"
+                            ><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
                             <a type="button" class="delete_sk btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$keputusan->id.'" data-url="/buku-keputusan/delete/'.$keputusan->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
                         ';
                         return $btn;
@@ -111,6 +117,68 @@ class UmumController extends Controller
         return response()->json($data);
     }
 
+    public function updateSK(Request $request, $id){
+        $messages = [
+            'uNomor.required'            => 'Nomor Tidak Boleh Kosong!',
+            'uTanggal.required'          => 'Tanggal Tidak Boleh Kosong',
+            'uPerihal.required'          => 'Perihal Tidak Boleh Kosong!',
+            ];
+
+        $validator = \Validator::make($request->all(), [
+            'uPerihal'      => ['required'],
+            'uTanggal'     => ['required'],
+            'uNomor'      => ['required'],
+        ], $messages);
+        if ($validator->fails()) {
+            $data['success'] = 0;
+            $data['error'] = $validator->errors()->all();
+        }else {
+            $sk = Keputusan::find($id);
+            if($sk->sk_foto == ''){
+                if ($image = $request->file('uImage')) {
+                    $destinationPath = 'file/sk';
+                    $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
+                    $image->move($destinationPath, $profileImage);
+                }else{
+                    $profileImage = '';
+                }
+                $sk->update([
+                    'sk_nomor'                  => $request->uNomor,
+                    'sk_tanggal'                => $request->uTanggal,
+                    'sk_perihal'                => $request->uPerihal,
+                    'sk_foto'                   => $profileImage,
+                ]);
+            }else{
+                if($request->deleteImage == "true"){
+                    \File::delete(public_path("file/sk/$sk->sk_foto"));
+
+                    if ($image = $request->file('uImage')) {
+                        $destinationPath = 'file/sk';
+                        $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
+                        $image->move($destinationPath, $profileImage);
+                    }else{
+                        $profileImage = '';
+                    }
+                    $sk->update([
+                        'sk_nomor'                  => $request->uNomor,
+                        'sk_tanggal'                => $request->uTanggal,
+                        'sk_perihal'                => $request->uPerihal,
+                        'sk_foto'                   => $profileImage,
+                    ]);
+                }else{
+                    $sk->update([
+                    'sk_nomor'                  => $request->uNomor,
+                    'sk_tanggal'                => $request->uTanggal,
+                    'sk_perihal'                => $request->uPerihal,
+                ]);
+                }
+            }
+            
+            $data['success'] = 1;
+        }
+        return response()->json($data);
+    }
+
     public function destroySK($id){
         $data = Keputusan::find($id);
         $foto = $data->sk_foto;
@@ -135,7 +203,14 @@ class UmumController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function(Cuti $cuti){
                         $btn = '
-                            <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$cuti->id.'" data-url="/buku-cuti/edit/'.$cuti->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
+                            <a type="button" class="edit_cuti btn btn-danger btn-xs" style="height: 30px; width: 30px"
+                                data-id="'.$cuti->id.'"
+                                data-jenis="'.$cuti->cuti_jenis.'"
+                                data-tanggal="'.$cuti->cuti_tanggal.'"
+                                data-mulai="'.$cuti->cuti_mulai.'"
+                                data-selesai="'.$cuti->cuti_selesai.'"
+                                data-keterangan="'.$cuti->keterangan.'"
+                            ><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
                             <a type="button" class="delete_cuti btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$cuti->id.'" data-url="/buku-cuti/delete/'.$cuti->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
                         ';
                         return $btn;
@@ -149,6 +224,13 @@ class UmumController extends Controller
                     })
                     ->editColumn('cuti_selesai', function (Cuti $cuti) {
                         return Carbon::createFromFormat('Y-m-d', $cuti->cuti_selesai)->format('d M Y');
+                    })
+                    ->editColumn('keterangan', function (Cuti $cuti) {
+                        if($cuti->keterangan == ''){
+                            return "---";
+                        }else{
+                            return $cuti->keterangan;
+                        }
                     })
                     ->filterColumn('cuti_tanggal', function ($query, $keyword) {
                         $query->whereRaw("DATE_FORMAT(cuti_tanggal,'%d %M %Y') like ?", ["%$keyword%"]);
@@ -199,6 +281,34 @@ class UmumController extends Controller
         }
     }
 
+    public function updateCuti(Request $request, $id){
+        $messages = [
+            'uTanggal.required'         => 'Tanggal Tidak Boleh Kosong!',
+            'uMulai.required'           => 'Tanggal Mulai Cuti Tidak Boleh Kosong!',
+            'uSelesai.required'         => 'Tanggal Selesai Cuti Tidak Boleh Kosong!',
+            'uJenis.required'           => 'Jenis Cuti Tidak Boleh Kosong!',
+            ];
+
+        $validator = \Validator::make($request->all(), [
+            'uJenis'       => ['required'],
+            'uSelesai'    => ['required'],
+            'uMulai'  => ['required'],
+            'uTanggal'      => ['required'],
+        ], $messages);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()]);
+        }else {
+            $cuti = Cuti::where('id', $id);
+            $cuti->update([
+                'cuti_tanggal'              => $request->uTanggal,
+                'cuti_mulai'                => $request->uMulai,
+                'cuti_selesai'              => $request->uSelesai,
+                'cuti_jenis'                => $request->uJenis,
+                'keterangan'                => $request->uKeterangan,
+            ]);
+        }
+    }
+
     public function destroyCuti($id){
         Cuti::find($id)->delete();
     }
@@ -211,13 +321,44 @@ class UmumController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function(Masuk $masuk){
                         $btn = '
-                            <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$masuk->id.'" data-url="/buku-masuk/edit/'.$masuk->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
+                            <a type="button" class="edit_masuk btn btn-danger btn-xs" style="height: 30px; width: 30px"
+                                data-id="'.$masuk->id.'"
+                                data-berkas="'.$masuk->masuk_berkas.'"
+                                data-pengirim="'.$masuk->masuk_pengirim.'"
+                                data-tanggal="'.$masuk->masuk_tanggal.'"
+                                data-nomor="'.$masuk->masuk_nomor.'"
+                                data-perihal="'.$masuk->masuk_perihal.'"
+                                data-petunjuk="'.$masuk->masuk_petunjuk.'"
+                                data-paket="'.$masuk->masuk_paket.'"
+                                data-foto="'.$masuk->masuk_foto.'"
+                            ><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
                             <a type="button" class="delete_masuk btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$masuk->id.'" data-url="/buku-masuk/delete/'.$masuk->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
                         ';
                         return $btn;
                     })
                     ->editColumn('masuk_tanggal', function (Masuk $masuk) {
                         return Carbon::createFromFormat('Y-m-d', $masuk->masuk_tanggal)->format('d M Y');
+                    })
+                    ->editColumn('masuk_berkas', function (Masuk $masuk) {
+                        if($masuk->masuk_berkas == ''){
+                            return "---";
+                        }else{
+                            return $masuk->masuk_berkas;
+                        }
+                    })
+                    ->editColumn('masuk_petunjuk', function (Masuk $masuk) {
+                        if($masuk->masuk_petunjuk == ''){
+                            return "---";
+                        }else{
+                            return $masuk->masuk_petunjuk;
+                        }
+                    })
+                    ->editColumn('masuk_paket', function (Masuk $masuk) {
+                        if($masuk->masuk_paket == ''){
+                            return "---";
+                        }else{
+                            return $masuk->masuk_paket;
+                        }
                     })
                     ->filterColumn('masuk_tanggal', function ($query, $keyword) {
                         $query->whereRaw("DATE_FORMAT(masuk_tanggal,'%d %M %Y') like ?", ["%$keyword%"]);
@@ -284,6 +425,82 @@ class UmumController extends Controller
             $masuk->masuk_foto         = $profileImage;
             $masuk->save();
 
+            $data['success'] = 1;
+        }
+        return response()->json($data);
+    }
+
+    public function updateMasuk(Request $request, $id){
+        $messages = [
+            'uPengirim.required'         => 'Pengirim Tidak Boleh Kosong!',
+            'uNomor.required'            => 'Nomor Tidak Boleh Kosong!',
+            'uTanggal.required'          => 'Tanggal Tidak Boleh Kosong',
+            'uPerihal.required'          => 'Perihal Tidak Boleh Kosong!',
+            ];
+
+        $validator = \Validator::make($request->all(), [
+            'uPerihal'     => ['required'],
+            'uNomor'       => ['required'],
+            'uTanggal'     => ['required'],
+            'uPengirim'    => ['required'],
+        ], $messages);
+
+        if ($validator->fails()) {
+            $data['success'] = 0;
+            $data['error'] = $validator->errors()->all();
+        }else {
+            $masuk = Masuk::find($id);
+            if($masuk->masuk_foto == ''){
+                if ($image = $request->file('uImage')) {
+                    $destinationPath = 'file/masuk';
+                    $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
+                    $image->move($destinationPath, $profileImage);
+                }else{
+                    $profileImage = '';
+                }
+                $masuk->update([
+                    'masuk_berkas'                  => $request->uBerkas,
+                    'masuk_pengirim'                => $request->uPengirim,
+                    'masuk_tanggal'                 => $request->uTanggal,
+                    'masuk_nomor'                   => $request->uNomor,
+                    'masuk_perihal'                 => $request->uPerihal,
+                    'masuk_petunjuk'                => $request->uPetunjuk,
+                    'masuk_paket'                   => $request->uPaket,
+                    'masuk_foto'                    => $profileImage,
+                ]);
+            }else{
+                if($request->deleteImage == "true"){
+                    \File::delete(public_path("file/masuk/$masuk->masuk_foto"));
+
+                    if ($image = $request->file('uImage')) {
+                        $destinationPath = 'file/masuk';
+                        $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
+                        $image->move($destinationPath, $profileImage);
+                    }else{
+                        $profileImage = '';
+                    }
+                    $masuk->update([
+                        'masuk_berkas'                  => $request->uBerkas,
+                        'masuk_pengirim'                => $request->uPengirim,
+                        'masuk_tanggal'                 => $request->uTanggal,
+                        'masuk_nomor'                   => $request->uNomor,
+                        'masuk_perihal'                 => $request->uPerihal,
+                        'masuk_petunjuk'                => $request->uPetunjuk,
+                        'masuk_paket'                   => $request->uPaket,
+                        'masuk_foto'                    => $profileImage,
+                    ]);
+                }else{
+                    $masuk->update([
+                        'masuk_berkas'                  => $request->uBerkas,
+                        'masuk_pengirim'                => $request->uPengirim,
+                        'masuk_tanggal'                 => $request->uTanggal,
+                        'masuk_nomor'                   => $request->uNomor,
+                        'masuk_perihal'                 => $request->uPerihal,
+                        'masuk_petunjuk'                => $request->uPetunjuk,
+                        'masuk_paket'                   => $request->uPaket,
+                ]);
+                }
+            }
             $data['success'] = 1;
         }
         return response()->json($data);

@@ -13,12 +13,14 @@ class CreateRekomendasiTable extends Migration
      */
     public function up()
     {
-        Schema::create('rekomendasi', function (Blueprint $table) {
+        Schema::create('rekomendasi_masuk', function (Blueprint $table) {
             $table->id();
-            $table->string('rekomendasi_alamat')->nullable();
-            $table->date('rekomendasi_tanggal')->nullable();
-            $table->string('rekomendasi_perihal')->nullable();
-            $table->string('rekomendasi_foto')->nullable();
+            $table->string('rm_pengirim')->nullable();
+            $table->string('rm_nomor')->nullable();
+            $table->date('rm_tanggal')->nullable();
+            $table->string('rm_perihal')->nullable();
+            $table->integer('rm_status')->nullable();
+            $table->string('rm_foto')->nullable();
             $table->timestamps();
         });
     }
