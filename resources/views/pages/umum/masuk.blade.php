@@ -235,43 +235,6 @@
             ],
             order: [ 3 , 'desc'],
         });
-    });
-
-    $('.data-table').on('click','.delete_masuk',function(e){
-        e.preventDefault();
-        var id = $(this).data('id');
-        var url = $(this).data('url');
-        console.log(url);
-        Swal.fire({
-            title: 'Apa Anda Yakin?',
-            text: "Anda Tidak Dapat Membatalkan Operasi Ini!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-            }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token-delete"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    url:url,
-                    data:{id:id},
-                    method:'DELETE',
-                    success:function(data){
-                    Swal.fire(
-                        'Dihapus!',
-                        'Data Berhasil Dihapus.',
-                        'success'
-                    )
-                    setTimeout(function(){
-                    location.reload();
-                    }, 1000);
-                    }
-                });
 
         $('.data-table').on('click','.edit_masuk',function(e){
             e.preventDefault();
@@ -364,6 +327,45 @@
             });
         })
 
+        $('.data-table').on('click','.delete_masuk',function(e){
+            e.preventDefault();
+            var id = $(this).data('id');
+            var url = $(this).data('url');
+            console.log(url);
+            Swal.fire({
+                title: 'Apa Anda Yakin?',
+                text: "Anda Tidak Dapat Membatalkan Operasi Ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token-delete"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url:url,
+                        data:{id:id},
+                        method:'DELETE',
+                        success:function(data){
+                        Swal.fire(
+                            'Dihapus!',
+                            'Data Berhasil Dihapus.',
+                            'success'
+                        )
+                        setTimeout(function(){
+                        location.reload();
+                        }, 1000);
+                        }
+                    });
+                }
+            })
+        });
+
         $(document).ready(function() {
             $('.addMasuk').click(function(e){
                 e.preventDefault();
@@ -426,6 +428,7 @@
                 });
             })
         });
+
     });
 </script>
 @endpush
