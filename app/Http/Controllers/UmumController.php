@@ -7,6 +7,7 @@ use App\Models\Inventaris;
 use App\Models\Cuti;
 use App\Models\Keputusan;
 use App\Models\Masuk;
+use App\Models\Keluar;
 use DataTables;
 use Auth;
 use Illuminate\Support\Facades\DB;
@@ -298,6 +299,83 @@ class UmumController extends Controller
         $data->delete();
     }
 
+    //Buku Keluar
+    public function bukuKeluar(Request $request)
+    {
+        $data = Keluar::select('*');
+        if ($request->ajax()) {
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function(Keluar $keluar){
+                        $btn = '
+                            <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$keluar->id.'" data-url="/buku-keluar/edit/'.$keluar->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
+                            <a type="button" class="delete_masuk btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$keluar->id.'" data-url="/buku-keluar/delete/'.$keluar->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
+                        ';
+                        return $btn;
+                    })
+                    ->addColumn('foto', function (Keluar $keluar) {
+                        if ($keluar->keluar_foto == ''){
+                            return "Tidak ada foto/file";
+                        }else{
+                            $btn = '
+                            <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" href="/buku-keluar/download/'.$keluar->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">save_alt</i></a>
+                        ';
+                        return $btn;
+                        }
+                    })
+                    ->rawColumns(['action', 'foto'])
+                    ->toJson();
+        }
+        return view('pages.umum.keluar');
+    }
+    public function downloadKeluar($id){
+        $data = Keluar::find($id);
+        $name = $data->keluar_foto;
+
+        return response()->download(public_path("file/keluar/$name"));
+    }
+    public function addKeluar(Request $request){
+        $messages = [
+            'keluar_penerima.required'           => 'Penerima Tidak Boleh Kosong!',
+            'keluar_nomor.required'            => 'Nomor Tidak Boleh Kosong!',
+            'keluar_tanggal.required'          => 'Tanggal Tidak Boleh Kosong',
+            'keluar_perihal.required'          => 'Perihal Tidak Boleh Kosong!',
+            ];
+
+        $validator = \Validator::make($request->all(), [
+            'keluar_perihal'     => ['required'],
+            'keluar_nomor'       => ['required'],
+            'keluar_tanggal'     => ['required'],
+            'keluar_penerima'    => ['required'],
+        ], $messages);
+
+        if ($validator->fails()) {
+            $data['success'] = 0;
+            $data['error'] = $validator->errors()->all();
+        }else {
+
+            if ($image = $request->file('image')) {
+                $destinationPath = 'file/keluar';
+                $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
+                $image->move($destinationPath, $profileImage);
+            }else{
+                $profileImage = '';
+            }
+
+            $keluar = new Keluar;
+            $keluar->keluar_berkas       = $request->keluar_berkas;
+            $keluar->keluar_tujuan     = $request->keluar_penerima;
+            $keluar->keluar_tanggal      = $request->keluar_tanggal;
+            $keluar->keluar_perihal      = $request->keluar_perihal;
+            $keluar->keluar_petunjuk     = $request->keluar_petunjuk;
+            $keluar->keluar_nomor        = $request->keluar_nomor;
+            $keluar->keluar_foto         = $profileImage;
+            $keluar->save();
+
+            $data['success'] = 1;
+        }
+        return response()->json($data);
+    }
     public function create()
     {
         //

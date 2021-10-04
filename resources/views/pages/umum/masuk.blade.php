@@ -157,6 +157,8 @@
         order: [ 3 , 'desc'],
     });
 
+    });
+
     $('.data-table').on('click','.delete_masuk',function(e){
         e.preventDefault();
         var id = $(this).data('id');
@@ -258,8 +260,6 @@
             });
         })
     });
-
-});
 
 </script>
 @endpush
