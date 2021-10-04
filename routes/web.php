@@ -64,5 +64,10 @@ Route::put('/buku-keluar/edit/{id}', [UmumController::class, 'updateKeluar'])->n
 Route::get('/data-anggota-pkk', [KelembagaanController::class, 'dataPKK'])->name('kelembagaan.data_pkk');
 Route::get('/buku-gaji', [KelembagaanController::class, 'bukuGaji'])->name('kelembagaan.buku-gaji');
 Route::get('/data-anggota-posyandu', [KelembagaanController::class, 'dataPosyandu'])->name('kelembagaan.data_posyandu');
+//Buku Rekomendasi Masuk
 Route::get('/buku-rekomendasimasuk', [KelembagaanController::class, 'bukuRekomendasimasuk'])->name('kelembagaan.buku-rekomendasimasuk');
+Route::post('buku-rekomendasimasuk/add', [KelembagaanController::class, 'addRM'])->name('buku-rekomendasimasuk.add');
+Route::get('/buku-rekomendasimasuk/download/{id}', [KelembagaanController::class, 'downloadRM'])->name('buku-rekomendasimasuk');
+Route::delete('/buku-rekomendasimasuk/delete/{id}', [KelembagaanController::class, 'destroyRM'])->name('buku-rekomendasimasuk.delete');
+
 Route::get('/buku-rekomendasikeluar', [KelembagaanController::class, 'bukuRekomendasikeluar'])->name('kelembagaan.buku-rekomendasikeluar');
