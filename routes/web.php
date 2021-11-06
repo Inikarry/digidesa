@@ -57,7 +57,12 @@ Route::post('buku-masuk/add', [UmumController::class, 'addMasuk'])->name('buku-m
 Route::put('/buku-masuk/edit/{id}', [UmumController::class, 'updateMasuk'])->name('buku-masuk.update');
 Route::delete('/buku-masuk/delete/{id}', [UmumController::class, 'destroyMasuk'])->name('buku-masuk.delete');
 Route::get('/buku-masuk/download/{id}', [UmumController::class, 'downloadMasuk'])->name('buku-masuk.download');
-
+//Buku Agenda Keluar
+Route::get('/buku-keluar', [UmumController::class, 'bukuKeluar'])->name('umum.buku-keluar');
+Route::post('buku-keluar/add', [UmumController::class, 'addKeluar'])->name('buku-keluar.add');
+Route::get('/buku-keluar/download/{id}', [UmumController::class, 'downloadKeluar'])->name('buku-keluar.download');
+Route::delete('/buku-keluar/delete/{id}', [UmumController::class, 'destroyKeluar'])->name('buku-keluar.delete');
+Route::put('/buku-keluar/edit/{id}', [UmumController::class, 'updateKeluar'])->name('buku-keluar.update');
 /** Adminitrasi Kelembagaan **/
 //Buku Kepangkatan
 Route::get('/buku-pangkat', [KelembagaanController::class, 'bukuPangkat'])->name('kelembagaan.buku-pangkat');
@@ -78,6 +83,9 @@ Route::put('/buku-kenaikan-pegawai/edit/{id}', [KelembagaanController::class, 'u
 Route::put('/buku-kenaikan-pegawai/kt-add/{id}', [KelembagaanController::class, 'addKT'])->name('buku-kenaikan-pegawai.addKT');
 Route::put('/buku-kenaikan-pegawai/kt-remove/{id}', [KelembagaanController::class, 'removeKT'])->name('buku-kenaikan-pegawai.removeKT');
 Route::delete('/buku-kenaikan-pegawai/delete/{id}', [KelembagaanController::class, 'destroyKP'])->name('buku-kenaikan-pegawai.delete');
-
 Route::get('/buku-rekomendasimasuk', [KelembagaanController::class, 'bukuRekomendasimasuk'])->name('kelembagaan.buku-rekomendasimasuk');
+Route::post('buku-rekomendasimasuk/add', [KelembagaanController::class, 'addRM'])->name('buku-rekomendasimasuk.add');
+Route::get('/buku-rekomendasimasuk/download/{id}', [KelembagaanController::class, 'downloadRM'])->name('buku-rekomendasimasuk');
+Route::delete('/buku-rekomendasimasuk/delete/{id}', [KelembagaanController::class, 'destroyRM'])->name('buku-rekomendasimasuk.delete');
+
 Route::get('/buku-rekomendasikeluar', [KelembagaanController::class, 'bukuRekomendasikeluar'])->name('kelembagaan.buku-rekomendasikeluar');
