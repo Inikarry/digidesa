@@ -22,11 +22,11 @@ class CreateDaftarPangkatTable extends Migration
             $table->string('pangkat_karpeg')->nullable();
             $table->string('pangkat_gol')->nullable();
             $table->date('pangkat_tmt')->nullable();
-            $table->string('jabatan_nama')->nullable();
+            $table->integer('jabatan_id')->nullable();
             $table->date('jabatan_tmt')->nullable();
             $table->string('jabatan_eselon')->nullable();
             $table->string('masa_kerja_tahun')->nullable();
-            $table->string('masa_kerja_bulab')->nullable();
+            $table->string('masa_kerja_bulan')->nullable();
             $table->string('diklat_nama')->nullable();
             $table->string('diklat_bulan_tahun')->nullable();
             $table->string('diklat_jam')->nullable();

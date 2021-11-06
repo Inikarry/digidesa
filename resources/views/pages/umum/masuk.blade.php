@@ -325,7 +325,7 @@
                     }
                 }
             });
-        })
+        });
 
         $('.data-table').on('click','.delete_masuk',function(e){
             e.preventDefault();

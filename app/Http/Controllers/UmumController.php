@@ -95,7 +95,6 @@ class UmumController extends Controller
             $data['success'] = 0;
             $data['error'] = $validator->errors()->all();
         }else {
-
             if ($image = $request->file('image')) {
                 $destinationPath = 'file/sk';
                 $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
@@ -189,8 +188,172 @@ class UmumController extends Controller
     }
 
     //Buku Inventaris
-    public function bukuInventaris() {
+    public function bukuInventaris(Request $request) {
+        $data = Inventaris::select('*');
+        if ($request->ajax()) {
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function(Inventaris $inventaris){
+                        $btn = '
+                            <a type="button" class="edit_inventaris btn btn-danger btn-xs" style="height: 30px; width: 30px"
+                                data-id="'.$inventaris->id.'"
+                                data-kode="'.$inventaris->inventaris_kode.'"
+                                data-register="'.$inventaris->inventaris_register.'"
+                                data-nama="'.$inventaris->inventaris_nama.'"
+                                data-merek="'.$inventaris->inventaris_merek.'"
+                                data-sertifikat="'.$inventaris->inventaris_sertifikat.'"
+                                data-bahan="'.$inventaris->inventaris_bahan.'"
+                                data-asal_usul="'.$inventaris->inventaris_asal_usul.'"
+                                data-tahun_beli="'.$inventaris->inventaris_tahun_beli.'"
+                                data-ukuran="'.$inventaris->inventaris_ukuran.'"
+                                data-satuan="'.$inventaris->inventaris_satuan.'"
+                                data-kondisi="'.$inventaris->inventaris_kondisi.'"
+                                data-awal_jumlah="'.$inventaris->inventaris_awal_jumlah.'"
+                                data-awal_harga="'.$inventaris->inventaris_awal_harga.'"
+                                data-kurang_jumlah="'.$inventaris->inventaris_kurang_jumlah.'"
+                                data-kurang_harga="'.$inventaris->inventaris_kurang_harga.'"
+                                data-tambah_jumlah="'.$inventaris->inventaris_tambah_jumlah.'"
+                                data-tambah_harga="'.$inventaris->inventaris_tambah_harga.'"
+                                data-akhir_jumlah="'.$inventaris->inventaris_akhir_jumlah.'"
+                                data-akhir_harga="'.$inventaris->inventaris_akhir_harga.'"
+                                data-keterangan="'.$inventaris->inventaris_ket.'"
+                            ><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
+                            <a type="button" class="delete_inventaris btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$inventaris->id.'" data-url="/buku-inventaris/delete/'.$inventaris->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
+                        ';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->toJson();
+        }
         return view('pages.umum.inventaris');
+    }
+
+    public function addInventaris(Request $request){
+        $messages = [
+            'akhir_harga.required'  => 'Jumlah Akhir Harga Tidak Boleh Kosong!',
+            'akhir_jumlah.required' => 'Jumlah Akhir Baranf Tidak Boleh Kosong!',
+            'awal_harga.required'   => 'Jumlah Awal Harga Tidak Boleh Kosong!',
+            'awal_jumlah.required'  => 'Jumlah Awal Baranf Tidak Boleh Kosong!',
+            'kondisi.required'      => 'Kondisi Barang Tidak Boleh Kosong!',
+            'satuan.required'       => 'Satuan Barang Tidak Boleh Kosong!',
+            'tahun_beli.required'   => 'Tahun Beli/Perolehan Tidak Boleh Kosong!',
+            'asal_usul.required'    => 'Asal Usul Barang Tidak Boleh Kosong!',
+            'nama.required'         => 'Nama Barang Tidak Boleh Kosong!',
+            'register.required'     => 'Nomor Register Tidak Boleh Kosong!',
+            'kode.unique'           => 'Kode Barang Telah Ada',
+            'kode.required'         => 'Kode Barang Tidak Boleh Kosong!',
+            ];
+
+        $validator = \Validator::make($request->all(), [
+            'akhir_harga'   => 'required',
+            'akhir_jumlah'  => 'required',
+            'awal_harga'    => 'required',
+            'awal_jumlah'   => 'required',
+            'kondisi'       => 'required',
+            'satuan'        => 'required',
+            'tahun_beli'    => 'required',
+            'asal_usul'     => 'required',
+            'nama'          => 'required',
+            'register'      => 'required',
+            'kode'          => 'required|unique:inventaris,inventaris_kode',
+        ], $messages);
+
+        if ($validator->fails()) {
+            $data['success'] = 0;
+            $data['error'] = $validator->errors()->all();
+        }else {
+            Inventaris::create([
+                'inventaris_kode'           => $request->kode,
+                'inventaris_register'       => $request->register,
+                'inventaris_nama'           => $request->nama,
+                'inventaris_merek'          => $request->merek,
+                'inventaris_sertifikat'     => $request->sertifikat,
+                'inventaris_bahan'          => $request->bahan,
+                'inventaris_asal_usul'      => $request->asal_usul,
+                'inventaris_tahun_beli'     => $request->tahun_beli,
+                'inventaris_ukuran'         => $request->ukuran,
+                'inventaris_satuan'         => $request->satuan,
+                'inventaris_kondisi'        => $request->kondisi,
+                'inventaris_awal_jumlah'    => $request->awal_jumlah,
+                'inventaris_awal_harga'     => $request->awal_harga,
+                'inventaris_kurang_jumlah'  => $request->kurang_jumlah,
+                'inventaris_kurang_harga'   => $request->kurang_harga,
+                'inventaris_tambah_jumlah'  => $request->tambah_jumlah,
+                'inventaris_tambah_harga'   => $request->tambah_harga,
+                'inventaris_akhir_jumlah'   => $request->akhir_jumlah,
+                'inventaris_akhir_harga'    => $request->akhir_harga,
+                'inventaris_ket'            => $request->keterangan,
+             ]);
+
+            $data['success'] = 1;
+        }
+        return response()->json($data);
+    }
+
+    public function updateInventaris(Request $request, $id){
+        $messages = [
+            'Uakhir_harga.required'  => 'Jumlah Akhir Harga Tidak Boleh Kosong!',
+            'Uakhir_jumlah.required' => 'Jumlah Akhir Baranf Tidak Boleh Kosong!',
+            'Uawal_harga.required'   => 'Jumlah Awal Harga Tidak Boleh Kosong!',
+            'Uawal_jumlah.required'  => 'Jumlah Awal Baranf Tidak Boleh Kosong!',
+            'Ukondisi.required'      => 'Kondisi Barang Tidak Boleh Kosong!',
+            'Usatuan.required'       => 'Satuan Barang Tidak Boleh Kosong!',
+            'Utahun_beli.required'   => 'Tahun Beli/Perolehan Tidak Boleh Kosong!',
+            'Uasal_usul.required'    => 'Asal Usul Barang Tidak Boleh Kosong!',
+            'Unama.required'         => 'Nama Barang Tidak Boleh Kosong!',
+            'Uregister.required'     => 'Nomor Register Tidak Boleh Kosong!',
+            'Ukode.unique'           => 'Kode Barang Telah Ada',
+            'Ukode.required'         => 'Kode Barang Tidak Boleh Kosong!',
+            ];
+
+        $validator = \Validator::make($request->all(), [
+            'Uakhir_harga'   => 'required',
+            'Uakhir_jumlah'  => 'required',
+            'Uawal_harga'    => 'required',
+            'Uawal_jumlah'   => 'required',
+            'Ukondisi'       => 'required',
+            'Usatuan'        => 'required',
+            'Utahun_beli'    => 'required',
+            'Uasal_usul'     => 'required',
+            'Unama'          => 'required',
+            'Uregister'      => 'required',
+            'Ukode'          => 'required|unique:inventaris,inventaris_kode,'.$id,
+        ], $messages);
+
+        if ($validator->fails()) {
+            $data['success'] = 0;
+            $data['error'] = $validator->errors()->all();
+        }else {
+            $inventaris = Inventaris::find($id);
+            $inventaris->update([
+                'inventaris_kode'           => $request->Ukode,
+                'inventaris_register'       => $request->Uregister,
+                'inventaris_nama'           => $request->Unama,
+                'inventaris_merek'          => $request->Umerek,
+                'inventaris_sertifikat'     => $request->Usertifikat,
+                'inventaris_bahan'          => $request->Ubahan,
+                'inventaris_asal_usul'      => $request->Uasal_usul,
+                'inventaris_tahun_beli'     => $request->Utahun_beli,
+                'inventaris_ukuran'         => $request->Uukuran,
+                'inventaris_satuan'         => $request->Usatuan,
+                'inventaris_kondisi'        => $request->Ukondisi,
+                'inventaris_awal_jumlah'    => $request->Uawal_jumlah,
+                'inventaris_awal_harga'     => $request->Uawal_harga,
+                'inventaris_kurang_jumlah'  => $request->Ukurang_jumlah,
+                'inventaris_kurang_harga'   => $request->Ukurang_harga,
+                'inventaris_tambah_jumlah'  => $request->Utambah_jumlah,
+                'inventaris_tambah_harga'   => $request->Utambah_harga,
+                'inventaris_akhir_jumlah'   => $request->Uakhir_jumlah,
+                'inventaris_akhir_harga'    => $request->Uakhir_harga,
+                'inventaris_ket'            => $request->Uketerangan,
+            ]);
+            $data['success'] = 1;
+        }
+        return response()->json($data);
+    } 
+
+    public function destroyInventaris($id){
+        Inventaris::find($id)->delete();
     }
 
     //Buku Cuti

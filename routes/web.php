@@ -43,6 +43,9 @@ Route::delete('/buku-keputusan/delete/{id}', [UmumController::class, 'destroySK'
 Route::get('/buku-keputusan/download/{id}', [UmumController::class, 'downloadSK'])->name('buku-keputusan.download');
 //Buku Inventaris
 Route::get('/buku-inventaris', [UmumController::class, 'bukuInventaris'])->name('umum.buku-inventaris');
+Route::post('buku-inventaris/add', [UmumController::class, 'addInventaris'])->name('buku-inventaris.add');
+Route::put('/buku-inventaris/edit/{id}', [UmumController::class, 'updateInventaris'])->name('buku-inventaris.update');
+Route::delete('/buku-inventaris/delete/{id}', [UmumController::class, 'destroyInventaris'])->name('buku-inventaris.delete');
 //Buku Cuti
 Route::get('/buku-cuti', [UmumController::class, 'bukuCuti'])->name('umum.buku-cuti');
 Route::delete('/buku-cuti/delete/{id}', [UmumController::class, 'destroyCuti'])->name('buku-cuti.delete');
@@ -56,8 +59,25 @@ Route::delete('/buku-masuk/delete/{id}', [UmumController::class, 'destroyMasuk']
 Route::get('/buku-masuk/download/{id}', [UmumController::class, 'downloadMasuk'])->name('buku-masuk.download');
 
 /** Adminitrasi Kelembagaan **/
-Route::get('/data-anggota-pkk', [KelembagaanController::class, 'dataPKK'])->name('kelembagaan.data_pkk');
+//Buku Kepangkatan
+Route::get('/buku-pangkat', [KelembagaanController::class, 'bukuPangkat'])->name('kelembagaan.buku-pangkat');
+Route::post('buku-pangkat/add', [KelembagaanController::class, 'addPangkat'])->name('buku-pangkat.add');
+Route::put('/buku-pangkat/edit/{id}', [KelembagaanController::class, 'updatePangkat'])->name('buku-pangkat.update');
+Route::delete('/buku-pangkat/delete/{id}', [KelembagaanController::class, 'destroyPangkat'])->name('buku-pangkat.delete');
+//Buku Kenaikan Gaji
 Route::get('/buku-gaji', [KelembagaanController::class, 'bukuGaji'])->name('kelembagaan.buku-gaji');
-Route::get('/data-anggota-posyandu', [KelembagaanController::class, 'dataPosyandu'])->name('kelembagaan.data_posyandu');
+Route::post('buku-gaji/add', [KelembagaanController::class, 'addGaji'])->name('buku-gaji.add');
+Route::put('/buku-gaji/edit/{id}', [KelembagaanController::class, 'updateGaji'])->name('buku-gaji.update');
+Route::delete('/buku-gaji/delete/{id}', [KelembagaanController::class, 'destroyGaji'])->name('buku-gaji.delete');
+Route::get('/buku-gaji/download/{id}', [KelembagaanController::class, 'downloadGaji'])->name('buku-gaji.download');
+//Buku Kenaikan Pegawai
+Route::get('/buku-kenaikan-pegawai', [KelembagaanController::class, 'bukuKP'])->name('kelembagaan.buku-kenaikanPegawai');
+Route::get('/load-kenaikan-pegawai/{id}', [KelembagaanController::class, 'loadKP'])->name('kelembagaan.load-kenaikanPegawai');
+Route::post('buku-kenaikan-pegawai/add', [KelembagaanController::class, 'addKP'])->name('buku-kenaikan-pegawai.add');
+Route::put('/buku-kenaikan-pegawai/edit/{id}', [KelembagaanController::class, 'updateKP'])->name('buku-kenaikan-pegawai.update');
+Route::put('/buku-kenaikan-pegawai/kt-add/{id}', [KelembagaanController::class, 'addKT'])->name('buku-kenaikan-pegawai.addKT');
+Route::put('/buku-kenaikan-pegawai/kt-remove/{id}', [KelembagaanController::class, 'removeKT'])->name('buku-kenaikan-pegawai.removeKT');
+Route::delete('/buku-kenaikan-pegawai/delete/{id}', [KelembagaanController::class, 'destroyKP'])->name('buku-kenaikan-pegawai.delete');
+
 Route::get('/buku-rekomendasimasuk', [KelembagaanController::class, 'bukuRekomendasimasuk'])->name('kelembagaan.buku-rekomendasimasuk');
 Route::get('/buku-rekomendasikeluar', [KelembagaanController::class, 'bukuRekomendasikeluar'])->name('kelembagaan.buku-rekomendasikeluar');

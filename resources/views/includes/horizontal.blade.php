@@ -42,13 +42,13 @@
                     <li><a href="#" class="{{ (request()->routeIs('kelembagaan.*')) ? 'active' : '' }}">Kelembagaan<i class="material-icons">keyboard_arrow_down</i></a>
                          <ul>
                             <li>
-                                <a href="/data-anggota-pkk" class="{{ (request()->routeIs('kelembagaan.data_pkk')) ? 'active' : '' }}">Daftar Urut Kepangkatan</a>
+                                <a href="/buku-pangkat" class="{{ (request()->routeIs('kelembagaan.buku-pangkat')) ? 'active' : '' }}">Daftar Urut Kepangkatan</a>
                             </li>
                             <li>
                                 <a href="/buku-gaji" class="{{ (request()->routeIs('kelembagaan.buku-gaji')) ? 'active' : '' }}">Buku Kenaikan Gaji Berkala</a>
                             </li>
                             <li>
-                                <a href="/data-anggota-posyandu" class="{{ (request()->routeIs('kelembagaan.data_posyandu')) ? 'active' : '' }}">Buku Kenaikan Pangkat Pegawai</a>
+                                <a href="/buku-kenaikan-pegawai" class="{{ (request()->routeIs('kelembagaan.buku-kenaikanPegawai')) ? 'active' : '' }}">Buku Kenaikan Pangkat Pegawai</a>
                             </li>
                             <li>
                                 <a href="/buku-rekomendasimasuk" class="{{ (request()->routeIs('kelembagaan.buku-rekomendasimasuk')) ? 'active' : '' }}">Buku Rekomendasi Pemberhentian & Pengangkatan Perangkat Desa (Surat Masuk)</a>
