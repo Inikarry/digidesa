@@ -6,6 +6,7 @@ use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\UmumController;
 use App\Http\Controllers\PembangunanController;
 use App\Http\Controllers\KelembagaanController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -27,12 +28,33 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('pages.index');
 })->name('dashboard');
 
+/** Profile */
+Route::put('editProfile/{id}', [UserController::class, 'update'])->name('editProfile');
+Route::put('editPassword/{id}', [UserController::class, 'changePassword'])->name('editPassword');
+
+/** User */
+Route::get('/daftar-user', [UserController::class, 'daftarUser'])->name('daftar-user');
+Route::post('daftar-user/add', [UserController::class, 'addUser'])->name('daftar-user.add');
+Route::put('/daftar-user/edit/{id}', [UserController::class, 'updateUser'])->name('daftar-user.update');
+Route::delete('/daftar-user/delete/{id}', [UserController::class, 'destroyUser'])->name('daftar-user.delete');
+
 /** Administrasi Penduduk **/
-Route::get('/buku-induk-penduduk', [PendudukController::class, 'bukuInduk'])->name('penduduk.buku_induk_penduduk');
-Route::get('/buku-mutasi', [PendudukController::class, 'bukuMutasi'])->name('penduduk.buku_mutasi');
-Route::get('/buku-rekapitulasi', [PendudukController::class, 'bukuRekapitulasi'])->name('penduduk.buku_rekapitulasi');
 Route::get('/buku-penduduk', [PendudukController::class, 'bukuPenduduk'])->name('penduduk.buku_penduduk');
-Route::get('/buku-ktp', [PendudukController::class, 'bukuKtp'])->name('penduduk.buku_ktp');
+Route::put('/buku-penduduk/edit/{id}', [PendudukController::class, 'updatePenduduk'])->name('buku-penduduk.update');
+Route::get('/load-penduduk/{id}', [PendudukController::class, 'loadPenduduk'])->name('penduduk.load-penduduk');
+Route::post('/load-detail-penduduk/{id}', [PendudukController::class, 'loadDetail'])->name('penduduk.load-detail');
+//Buku Perkawinan
+Route::get('/buku-perkawinan', [PendudukController::class, 'bukuPerkawinan'])->name('penduduk.buku_perkawinan');
+Route::post('buku-perkawinan/add', [PendudukController::class, 'addPerkawinan'])->name('buku-perkawinan.add');
+Route::put('/buku-perkawinan/edit/{id}', [PendudukController::class, 'updatePerkawinan'])->name('buku-perkawinan.update');
+Route::delete('/buku-perkawinan/delete/{id}', [PendudukController::class, 'destroyPerkawinan'])->name('buku-perkawinan.delete');
+Route::get('/load-perkawinan/{id}', [PendudukController::class, 'loadPerkawinan'])->name('penduduk.load-perkawinan');
+//Buku Kematian
+Route::get('/buku-kematian', [PendudukController::class, 'bukuKematian'])->name('penduduk.buku_kematian');
+Route::post('buku-kematian/add', [PendudukController::class, 'addKematian'])->name('buku-kematian.add');
+Route::put('/buku-kematian/edit/{id}', [PendudukController::class, 'updateKematian'])->name('buku-kematian.update');
+Route::delete('/buku-kematian/delete/{id}', [PendudukController::class, 'destroyKematian'])->name('buku-kematian.delete');
+Route::get('/load-kematian/{id}', [PendudukController::class, 'loadKematian'])->name('penduduk.load-kematian');
 
 /** Administrasi Umum **/
 //Buku Keputusan
@@ -63,6 +85,7 @@ Route::post('buku-keluar/add', [UmumController::class, 'addKeluar'])->name('buku
 Route::get('/buku-keluar/download/{id}', [UmumController::class, 'downloadKeluar'])->name('buku-keluar.download');
 Route::delete('/buku-keluar/delete/{id}', [UmumController::class, 'destroyKeluar'])->name('buku-keluar.delete');
 Route::put('/buku-keluar/edit/{id}', [UmumController::class, 'updateKeluar'])->name('buku-keluar.update');
+
 /** Adminitrasi Kelembagaan **/
 //Buku Kepangkatan
 Route::get('/buku-pangkat', [KelembagaanController::class, 'bukuPangkat'])->name('kelembagaan.buku-pangkat');

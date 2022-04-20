@@ -39,6 +39,7 @@
                 </div>
             </div>
         </div>
+        @include('includes.profile')
         @stack('predent-script')
         @include('includes.scripts')
         @stack('addon-script')      

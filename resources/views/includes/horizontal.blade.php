@@ -29,13 +29,13 @@
                     <li><a href="#" class="{{ (request()->routeIs('penduduk.*')) ? 'active' : '' }}">Penduduk<i class="material-icons">keyboard_arrow_down</i></a>
                         <ul>
                             <li>
-                                <a href="/buku-induk-penduduk" class="{{ (request()->routeIs('penduduk.buku_induk_penduduk')) ? 'active' : '' }}">Laporan Penduduk Kecamatan</a>
+                                <a href="/buku-penduduk" class="{{ (request()->routeIs('penduduk.buku_penduduk')) ? 'active' : '' }}">Laporan Penduduk Kecamatan</a>
                             </li>
                             <li>
-                                <a href="/buku-rekapitulasi" class="{{ (request()->routeIs('penduduk.buku_rekapitulasi')) ? 'active' : '' }}">Laporan Pencatatan Perkawinan</a>
+                                <a href="/buku-perkawinan" class="{{ (request()->routeIs('penduduk.buku_perkawinan')) ? 'active' : '' }}">Laporan Pencatatan Perkawinan</a>
                             </li>
                             <li>
-                                <a href="/buku-penduduk" class="{{ (request()->routeIs('penduduk.buku_penduduk')) ? 'active' : '' }}">Laporan Pencatatan Kematian</a>
+                                <a href="/buku-kematian" class="{{ (request()->routeIs('penduduk.buku_kematian')) ? 'active' : '' }}">Laporan Pencatatan Kematian</a>
                             </li>
                         </ul>
                     </li>
@@ -58,8 +58,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a href="charts.html">User</a></li>
-                        </ul>
+                    <li><a href="/daftar-user" class="{{ (request()->routeIs('daftar-user')) ? 'active' : '' }}">User</a>
                     </li>
                 </ul>
             </div>

@@ -1,7 +1,7 @@
 <?php 
     $current_user = auth()->user();
 ?>
-<nav class="navbar navbar-expand container">
+                    <nav class="navbar navbar-expand container">
                         <div class="logo-box"><a href="#" class="logo-text">Administrasi</a></div>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
@@ -25,7 +25,7 @@
                                 </div>
                             </li>
                         </ul>
-                        <div class="collapse navbar-collapse" id="navbarNav">
+                        <!-- <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">Projects</a>
@@ -37,5 +37,5 @@
                                     <a href="#" class="nav-link">Reports</a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
                     </nav>

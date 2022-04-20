@@ -473,7 +473,7 @@ class UmumController extends Controller
     }
 
     public function destroyCuti($id){
-        Cuti::find($id)->delete();
+        User::find($id)->delete();
     }
     
     //Buku Masuk
