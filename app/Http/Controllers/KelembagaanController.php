@@ -728,18 +728,31 @@ class KelembagaanController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function(RekomendasiMasuk $rekomendasimasuk){
                         $btn = '
-                            <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$rekomendasimasuk->id.'" data-url="/buku-cuti/edit/'.$rekomendasimasuk->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
+                            <a type="button" class="edit_rm btn btn-danger btn-xs" style="height: 30px; width: 30px"\
+                                data-id="'.$rekomendasimasuk->id.'"
+                                data-pengirim="'.$rekomendasimasuk->rm_pengirim.'"
+                                data-nomor="'.$rekomendasimasuk->rm_nomor.'"
+                                data-tanggal="'.$rekomendasimasuk->rm_tanggal.'"
+                                data-perihal="'.$rekomendasimasuk->rm_perihal.'"
+                                data-foto="'.$rekomendasimasuk->rm_foto.'"
+                            ><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
                             <a type="button" class="delete_rm btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$rekomendasimasuk->id.'" data-url="/buku-rekomendasimasuk/delete/'.$rekomendasimasuk->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
                         ';
                         return $btn;
                     })
-                     ->editColumn('rm_status', function (RekomendasiMasuk $rekomendasimasuk) {
+                    ->editColumn('rm_tanggal', function (RekomendasiMasuk $rekomendasimasuk) {
+                        return Carbon::createFromFormat('Y-m-d', $rekomendasimasuk->rm_tanggal)->format('d/m/Y');
+                    })
+                    ->editColumn('rm_status', function (RekomendasiMasuk $rekomendasimasuk) {
                         if ($rekomendasimasuk->rm_status == '') {
                            return "belum di proses";
                         }else{
                             return "telah di proses";
                         }
                         return Carbon::createFromFormat('Y-m-d', $keputusan->sk_tanggal)->format('d M Y');
+                    })
+                    ->filterColumn('rm_tanggal', function ($query, $keyword) {
+                        $query->whereRaw("DATE_FORMAT(rm_tanggal,'%d/%m/%Y') like ?", ["%$keyword%"]);
                     })
                     ->addColumn('foto', function (RekomendasiMasuk $rekomendasimasuk) {
                         if ($rekomendasimasuk->rm_foto == ''){
@@ -751,7 +764,6 @@ class KelembagaanController extends Controller
                         return $btn;
                         }
                     })
-
                     ->rawColumns(['action','foto'])
                     ->toJson();
             }
@@ -765,7 +777,7 @@ class KelembagaanController extends Controller
         return response()->download(public_path("file/rm/$name"));
     }
 
-    public function addRM (Request $request) {
+    public function addRM(Request $request) {
         $messages = [
             'rm_nomor.required'            => 'Nomor Tidak Boleh Kosong!',
             'rm_tanggal.required'          => 'Tanggal Tidak Boleh Kosong',
@@ -806,6 +818,73 @@ class KelembagaanController extends Controller
         return response()->json($data);
     }
 
+    public function updateRM(Request $request, $id){
+        $messages = [
+            'uPengirim.required'         => 'Pengirim Tidak Boleh Kosong!',
+            'uNomor.required'            => 'Nomor Tidak Boleh Kosong!',
+            'uTanggal.required'          => 'Tanggal Tidak Boleh Kosong',
+            'uPerihal.required'          => 'Perihal Tidak Boleh Kosong!',
+            ];
+
+        $validator = \Validator::make($request->all(), [
+            'uPerihal'      => ['required'],
+            'uTanggal'      => ['required'],
+            'uNomor'        => ['required'],
+            'uPengirim'     => ['required'],
+        ], $messages);
+        if ($validator->fails()) {
+            $data['success'] = 0;
+            $data['error'] = $validator->errors()->all();
+        }else {
+            $rm = RekomendasiMasuk::find($id);
+            if($rm->rm_foto == ''){
+                if ($image = $request->file('uImage')) {
+                    $destinationPath = 'file/rm';
+                    $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
+                    $image->move($destinationPath, $profileImage);
+                }else{
+                    $profileImage = '';
+                }
+                $rm->update([
+                    'rm_pengirim'               => $request->uPengirim,
+                    'rm_nomor'                  => $request->uNomor,
+                    'rm_tanggal'                => $request->uTanggal,
+                    'rm_perihal'                => $request->uPerihal,
+                    'rm_foto'                   => $profileImage,
+                ]);
+            }else{
+                if($request->deleteImage == "true"){
+                    \File::delete(public_path("file/rm/$rm->rm_foto"));
+
+                    if ($image = $request->file('uImage')) {
+                        $destinationPath = 'file/rm';
+                        $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
+                        $image->move($destinationPath, $profileImage);
+                    }else{
+                        $profileImage = '';
+                    }
+                    $rm->update([
+                        'rm_pengirim'               => $request->uPengirim,
+                        'rm_nomor'                  => $request->uNomor,
+                        'rm_tanggal'                => $request->uTanggal,
+                        'rm_perihal'                => $request->uPerihal,
+                        'rm_foto'                   => $profileImage,
+                    ]);
+                }else{
+                    $rm->update([
+                        'rm_pengirim'               => $request->uPengirim,
+                        'rm_nomor'                  => $request->uNomor,
+                        'rm_tanggal'                => $request->uTanggal,
+                        'rm_perihal'                => $request->uPerihal,
+                    ]);
+                }
+            }
+            
+            $data['success'] = 1;
+        }
+        return response()->json($data);
+    }
+    
     public function destroyRM($id){
         $data = RekomendasiMasuk::find($id);
         $foto = $data->rm_foto;
@@ -814,85 +893,197 @@ class KelembagaanController extends Controller
             \File::delete(public_path("file/rm/$foto"));
         }
         $data->delete();
+
+        $rk = RekomendasiKeluar::where('id_masuk', '=', $id)->first();
+        if ($rk !== null) {
+            $rk_foto = $rk->rk_foto;
+            if($rk_foto !== ''){
+                \File::delete(public_path("file/rk/$rk_foto"));
+            }
+            $rk->delete();
+        }
     }
-
-
+    //Buku Surat Rekemendasi Keluar
     public function bukuRekomendasikeluar(Request $request) {
-         $data = RekomendasiKeluar::select('*');
+        $data_masuk = RekomendasiMasuk::where('rm_status', '=', null)->orWhere('rm_status', '!=', 1)->select('id', 'rm_nomor')->get();
+        $data = RekomendasiKeluar::leftJoin('rekomendasi_masuk as rm', function ($join){
+                                        $join->on('rm.id', '=', 'rekomendasi_keluar.id_masuk');
+                                    })
+                                    ->select('rekomendasi_keluar.*', 'rm.rm_nomor as rm_nomor');
         if ($request->ajax()) {
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function(RekomendasiKeluar $rekomendasikeluar){
                         $btn = '
-                            <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$rekomendasikeluar->id.'" data-url="/buku-cuti/edit/'.$rekomendasikeluar->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
-                            <a type="button" class="delete_cuti btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$rekomendasikeluar->id.'" data-url="/buku-cuti/delete/'.$rekomendasikeluar->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
+                            <a type="button" class="edit_rk btn btn-danger btn-xs" style="height: 30px; width: 30px"\
+                                data-id="'.$rekomendasikeluar->id.'"
+                                data-tujuan="'.$rekomendasikeluar->rk_tujuan.'"
+                                data-tanggal="'.$rekomendasikeluar->rk_tanggal.'"
+                                data-keterangan="'.$rekomendasikeluar->rk_keterangan.'"
+                                data-foto="'.$rekomendasikeluar->rk_foto.'"
+                            ><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">mode_edit</i></a>
+                            <a type="button" class="delete_rk btn btn-danger btn-xs" style="height: 30px; width: 30px" data-id="'.$rekomendasikeluar->id.'" data-url="/buku-rekomendasikeluar/delete/'.$rekomendasikeluar->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">delete</i></a>
                         ';
                         return $btn;
                     })
-                    ->rawColumns(['action'])
+                    ->addColumn('nomor', function($data){
+                        if($data->rm_nomor !== null){
+                            return $data->rm_nomor;
+                        }else{
+                            return '---';
+                        }
+                    })
+                    ->addColumn('foto', function (RekomendasiKeluar $rekomendasikeluar) {
+                        if ($rekomendasikeluar->rk_foto == ''){
+                            return "Tidak ada foto/file";
+                        }else{
+                            $btn = '
+                                <a type="button" class="btn btn-danger btn-xs" style="height: 30px; width: 30px" href="/buku-rekomendasikeluar/download/'.$rekomendasikeluar->id.'"><i class="material-icons-outlined" style="vertical-align: middle; font-size: 18px">save_alt</i></a>
+                            ';
+                        return $btn;
+                        }
+                    })
+                    ->filterColumn('nomor', function ($query, $keyword) {
+                        $query->whereRaw("rm_nomor like ?", ["%$keyword%"]);
+                    })
+                    ->rawColumns(['action', 'foto'])
                     ->toJson();
+                }
+        return view('pages.kelembagaan.rekomendasikeluar', [
+            'data_masuk'         => $data_masuk,
+        ]);
+    }
+
+    public function downloadRK($id){
+        $data = RekomendasiKeluar::find($id);
+        $name = $data->rk_foto;
+
+        return response()->download(public_path("file/rk/$name"));
+    }
+
+    public function addRK(Request $request) {
+        $messages = [
+            'rk_tanggal.required'       => 'Tanggal Tidak Boleh Kosong',
+            'rk_tujuan.required'        => 'Alamat Tujuan Tidak Boleh Kosong!',
+            'rk_keterangan.required'    => 'Keterangan Tidak Boleh Kosong!',
+            ];
+
+        $validator = \Validator::make($request->all(), [
+            'rk_keterangan'     => ['required'],
+            'rk_tujuan'         => ['required'],
+            'rk_tanggal'        => ['required'],
+        ], $messages);
+
+        if ($validator->fails()) {
+            $data['success'] = 0;
+            $data['error'] = $validator->errors()->all();
+        }else {
+
+            if ($image = $request->file('image')) {
+                $destinationPath = 'file/rk';
+                $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
+                $image->move($destinationPath, $profileImage);
+            }else{
+                $profileImage = '';
             }
-        return view('pages.kelembagaan.rekomendasikeluar');
+
+            $rekomendasikeluar = new RekomendasiKeluar;
+            $rekomendasikeluar->id_masuk        = $request->rk_nomor;
+            $rekomendasikeluar->rk_tanggal      = $request->rk_tanggal;
+            $rekomendasikeluar->rk_keterangan   = $request->rk_keterangan;
+            $rekomendasikeluar->rk_tujuan       = $request->rk_tujuan;
+            $rekomendasikeluar->rk_foto         = $profileImage;
+            $rekomendasikeluar->save();
+
+            if($request->rk_nomor != 0){
+                $rm = RekomendasiMasuk::find($request->rk_nomor);
+                $rm->update([
+                    'rm_status'               => 1,
+                ]);
+            }
+
+            $data['success'] = 1;
+        }
+        return response()->json($data);
     }
 
-    public function create()
-    {
-        //
+    public function updateRK(Request $request, $id){
+        $messages = [
+            'uTujuan.required'           => 'Alamat Tujuan Tidak Boleh Kosong!',
+            'uTanggal.required'          => 'Tanggal Tidak Boleh Kosong',
+            'uKeterangan.required'       => 'Keterangan Tidak Boleh Kosong!',
+            ];
+
+        $validator = \Validator::make($request->all(), [
+            'uKeterangan'   => ['required'],
+            'uTanggal'      => ['required'],
+            'uTujuan'       => ['required'],
+        ], $messages);
+        if ($validator->fails()) {
+            $data['success'] = 0;
+            $data['error'] = $validator->errors()->all();
+        }else {
+            $rk = RekomendasiKeluar::find($id);
+            if($rk->rk_foto == ''){
+                if ($image = $request->file('uImage')) {
+                    $destinationPath = 'file/rk';
+                    $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
+                    $image->move($destinationPath, $profileImage);
+                }else{
+                    $profileImage = '';
+                }
+                $rk->update([
+                    'rk_tujuan'                 => $request->uTujuan,
+                    'rk_tanggal'                => $request->uTanggal,
+                    'rk_keterangan'             => $request->uKeterangan,
+                    'rk_foto'                   => $profileImage,
+                ]);
+            }else{
+                if($request->deleteImage == "true"){
+                    \File::delete(public_path("file/rk/$rk->rk_foto"));
+
+                    if ($image = $request->file('uImage')) {
+                        $destinationPath = 'file/rk';
+                        $profileImage = date('YmdHis')."_".$image->getClientOriginalName();
+                        $image->move($destinationPath, $profileImage);
+                    }else{
+                        $profileImage = '';
+                    }
+                    $rk->update([
+                        'rk_tujuan'                 => $request->uTujuan,
+                        'rk_tanggal'                => $request->uTanggal,
+                        'rk_keterangan'             => $request->uKeterangan,
+                        'rk_foto'                   => $profileImage,
+                    ]);
+                }else{
+                    $rm->update([
+                        'rk_tujuan'                 => $request->uTujuan,
+                        'rk_tanggal'                => $request->uTanggal,
+                        'rk_keterangan'             => $request->uKeterangan,
+                    ]);
+                }
+            }
+            
+            $data['success'] = 1;
+        }
+        return response()->json($data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function destroyRK($id){
+        $data = RekomendasiKeluar::find($id);
+        $foto = $data->rk_foto;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        if($foto !== ''){
+            \File::delete(public_path("file/rk/$foto"));
+        }
+        $data->delete();
+        
+        if($data->id_masuk != 0){
+            $rm = RekomendasiMasuk::find($data->id_masuk);
+            $rm->update([
+                'rm_status'               => 0,
+            ]);
+        }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    
 }

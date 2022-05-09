@@ -14,6 +14,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Daftar User</h5>
+                    <input type="hidden" id="user_role" value="{{ Auth::user()->role }}">
                     <div class="custom-control custom-switch">
                         <input type="checkbox" onchange="create()" class="custom-control-input" id="switchCreate">
                         <label class="custom-control-label" for="switchCreate">Tambah Data</label>
@@ -53,7 +54,9 @@
                                         <label for="keterangan">Role :</label>
                                         <select class="custom-select form-control" id="user_role">
                                             <option value="" selected disabled>-- Pilih Role --</option>
+                                            @if(Auth::user()->role == "Admin"){}
                                             <option value="Admin">Admin</option>
+                                            @endif
                                             @foreach($data_desa as $data)
                                             <option value="{{$data->nama_desa}}">Desa {{$data->nama_desa}}</option>
                                             @endforeach
@@ -191,13 +194,23 @@
             var edit_nip = $(this).data('nip');
             var edit_role = $(this).data('role');
             var old_password = $(this).data('password');
+            var user_role = $('#user_role').val();
             console.log(edit_role);
-            $('#editModal').modal('show');
-            document.getElementById("edit_id").value = edit_id;
-            document.getElementById("edit_nip").value = edit_nip;
-            document.getElementById("edit_nama").value = edit_nama;
-            document.getElementById("edit_role").value = edit_role;
-            document.getElementById("old_password").value = old_password;
+            if(user_role == "Admin"){
+                $('#editModal').modal('show');
+                document.getElementById("edit_id").value = edit_id;
+                document.getElementById("edit_nip").value = edit_nip;
+                document.getElementById("edit_nama").value = edit_nama;
+                document.getElementById("edit_role").value = edit_role;
+                document.getElementById("old_password").value = old_password;
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Maaf',
+                    text: 'Anda Bukan Admin!',
+                })
+            }
+            
         });
 
         $('.update').click(function(e){
@@ -258,39 +271,49 @@
             e.preventDefault();
             var id = $(this).data('id');
             var url = $(this).data('url');
+            var user_role = $('#user_role').val();
             console.log(url);
-            Swal.fire({
-                title: 'Apa Anda Yakin?',
-                text: "Anda Tidak Dapat Membatalkan Operasi Ini!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token-delete"]').attr('content')
-                        }
-                    });
-                    $.ajax({
-                        url:url,
-                        data:{id:id},
-                        method:'DELETE',
-                        success:function(data){
-                        Swal.fire(
-                            'Dihapus!',
-                            'Data Berhasil Dihapus.',
-                            'success'
-                        )
-                        setTimeout(function(){
-                        location.reload();
-                        }, 1000);
-                        }
-                    });
-                }
-            })
+            if(user_role == "Admin"){
+                Swal.fire({
+                    title: 'Apa Anda Yakin?',
+                    text: "Anda Tidak Dapat Membatalkan Operasi Ini!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token-delete"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            url:url,
+                            data:{id:id},
+                            method:'DELETE',
+                            success:function(data){
+                            Swal.fire(
+                                'Dihapus!',
+                                'Data Berhasil Dihapus.',
+                                'success'
+                            )
+                            setTimeout(function(){
+                            location.reload();
+                            }, 1000);
+                            }
+                        });
+                    }
+                })
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Maaf',
+                    text: 'Anda Bukan Admin!',
+                })
+            }
+            
         });
 
     });

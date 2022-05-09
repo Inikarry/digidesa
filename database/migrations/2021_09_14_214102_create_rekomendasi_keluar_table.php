@@ -15,11 +15,11 @@ class CreateRekomendasiKeluarTable extends Migration
     {
         Schema::create('rekomendasi_keluar', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_masuk');
-            $table->date('rk_tanggal');
-            $table->string('rk_tujuan');
-            $table->string('rk_keterangan');
-            $table->string('rk_foto');
+            $table->integer('id_masuk')->nullable();
+            $table->date('rk_tanggal')->nullable();
+            $table->string('rk_tujuan')->nullable();
+            $table->string('rk_keterangan')->nullable();
+            $table->string('rk_foto')->nullable();
             $table->timestamps();
         });
     }

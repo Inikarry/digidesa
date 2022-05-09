@@ -164,7 +164,6 @@
         </div>
     </div>
 </div>
-@endsection
 <!-- Edit Modal -->
 <div class="modal fade bd-example-modal-xl" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -291,6 +290,7 @@
         </div>
     </div>
 </div>
+@endsection
 @push('addon-script')
 <script type="text/javascript">
     function initialize() {

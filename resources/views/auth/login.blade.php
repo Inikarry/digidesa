@@ -1,7 +1,7 @@
 <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
-            <x-jet-authentication-card-logo />
+            <img src="../../favicon.png" alt="Soppeng Logo" style="width:120px;height:160px;">
         </x-slot>
 
         <x-jet-validation-errors class="mb-4" />
@@ -27,7 +27,7 @@
 
             <div class="flex items-center justify-end mt-4">
                 <x-jet-button class="ml-4">
-                    {{ __('Log in') }}
+                    {{ __('Masuk') }}
                 </x-jet-button>
             </div>
         </form>
