@@ -5,7 +5,7 @@
         <div class="col">
             <div class="horizontal-bar-menu">
                 <ul>
-                    <li><a href="/dashboard" class="{{ (request()->routeIs('dashboard')) ? 'active' : '' }}">Dashboard</a></li>
+                    <!-- <li><a href="/dashboard" class="{{ (request()->routeIs('dashboard')) ? 'active' : '' }}">Dashboard</a></li> -->
                     <li>
                         <a href="#" class="{{ (request()->routeIs('umum.*')) ? 'active' : '' }}">Umum<i class="material-icons">keyboard_arrow_down</i></a>
                         <ul>

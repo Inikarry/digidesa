@@ -24,9 +24,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('pages.index');
-})->name('dashboard');
+// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+//     return view('pages.index');
+// })->name('dashboard');
 
 /** Profile */
 Route::put('editProfile/{id}', [UserController::class, 'update'])->name('editProfile');
