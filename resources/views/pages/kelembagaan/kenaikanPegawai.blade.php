@@ -207,7 +207,7 @@
             initComplete: function (settings, json) {  
                 $(".data-table").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");            
             },
-            dom : "<'row'<'col-sm-2'l><'col-sm-2 download'><'col-sm-6'f><'col-sm-2 toolbar'>>" +
+            dom : "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2 toolbar'>>" +
                   "<'row'<'col-sm-12'tr>>" +
                   "<'row'<'col-sm-5'i><'col-sm-7'p>>",
             processing  : true,
@@ -250,11 +250,6 @@
                 '<option value="{{ now()->subYears(1)->year }}">Tahun {{ now()->subYears(1)->year }}</option>'+
                 '<option value="{{ now()->subYears(2)->year }}">Tahun {{ now()->subYears(2)->year }}</option>'+
             '</select>'
-        );
-        $("div.download").html(
-            '<div class="text-center">'+
-                '<button type="button" class="btn btn-outline-danger rounded-pill py-2.5 my-1">Cetak / Simpan</button>'+
-            '</div>'
         );
 
         $('.data-table').on('click','.edit_kp',function(e){

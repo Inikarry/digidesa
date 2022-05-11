@@ -217,7 +217,7 @@
         );
         $("div.download").html(
             '<div class="text-center">'+
-                '<button type="button" class="btn btn-outline-danger rounded-pill py-2.5 my-1">Cetak / Simpan</button>'+
+                '<a id="save_id" href="/save-penduduk/'+$('#input_month').val()+'"><button type="button" class="btn btn-outline-danger rounded-pill py-2.5 my-1">Cetak / Simpan</button></a>'+
             '</div>'
         );
 
@@ -296,6 +296,7 @@
         months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         y = $('#input_month').val();
         $('.data-table').DataTable().ajax.url("/load-penduduk/" + y).load();
+        document.getElementById("save_id").href = "/save-penduduk/"+y
         document.getElementById("month_title").innerHTML = "Bulan " + months[y];
         $.ajaxSetup({
             headers: {

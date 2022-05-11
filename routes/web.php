@@ -45,6 +45,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('/buku-penduduk/edit/{id}', [PendudukController::class, 'updatePenduduk'])->name('buku-penduduk.update');
     Route::get('/load-penduduk/{id}', [PendudukController::class, 'loadPenduduk'])->name('penduduk.load-penduduk');
     Route::post('/load-detail-penduduk/{id}', [PendudukController::class, 'loadDetail'])->name('penduduk.load-detail');
+    Route::get('/save-penduduk/{id}', [PendudukController::class, 'savePenduduk'])->name('penduduk.save-penduduk');
 });
 //Buku Perkawinan
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
@@ -53,6 +54,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('/buku-perkawinan/edit/{id}', [PendudukController::class, 'updatePerkawinan'])->name('buku-perkawinan.update');
     Route::delete('/buku-perkawinan/delete/{id}', [PendudukController::class, 'destroyPerkawinan'])->name('buku-perkawinan.delete');
     Route::get('/load-perkawinan/{id}', [PendudukController::class, 'loadPerkawinan'])->name('penduduk.load-perkawinan');
+    Route::get('/save-perkawinan/{id}', [PendudukController::class, 'savePerkawinan'])->name('penduduk.save-perkawinan');
 });
 //Buku Kematian
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
@@ -61,6 +63,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('/buku-kematian/edit/{id}', [PendudukController::class, 'updateKematian'])->name('buku-kematian.update');
     Route::delete('/buku-kematian/delete/{id}', [PendudukController::class, 'destroyKematian'])->name('buku-kematian.delete');
     Route::get('/load-kematian/{id}', [PendudukController::class, 'loadKematian'])->name('penduduk.load-kematian');
+    Route::get('/save-kematian/{id}', [PendudukController::class, 'saveKematian'])->name('penduduk.save-kematian');
 });
 /** Administrasi Umum **/
 //Buku Keputusan

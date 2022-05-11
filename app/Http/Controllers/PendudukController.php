@@ -10,6 +10,7 @@ use App\Models\Kependudukan;
 use DataTables;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use PDF;
 
 class PendudukController extends Controller
 {
@@ -76,6 +77,36 @@ class PendudukController extends Controller
                             ->first();
         }
         return response()->json($data);
+    }
+
+    public function savePenduduk($id){
+        $data_desa = DaftarDesa::select('*')->get();
+        $current_month = Carbon::now()->month;
+        if ($id+1 > $current_month){
+            $year = Carbon::now()->subYears(1)->year;
+        }else{
+            $year = Carbon::now()->year;
+        }
+
+        $months = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+        $month = $months[$id];
+
+        $data = DaftarDesa::leftJoin('kependudukan as pddk', function ($join) use ($id, $year) {
+                                    $join->on('pddk.id_desa', '=', 'desa.id')
+                                            ->whereYear('pddk.kependudukan_tanggal', $year)
+                                            ->whereMonth('pddk.kependudukan_tanggal', $id+1);
+                                })
+                                ->select('pddk.*', 'desa.nama_desa', 'desa.id as desa_id')
+                                ->get();
+
+        $pdf = PDF::loadView('pages.pdf.penduduk',[
+                                'datas'     =>$data,
+                                'data_desa' =>$data_desa,
+                                'month'     =>$month,
+                                'year'      =>$year
+                                ])->setPaper('legal', 'landscape');
+        
+        return $pdf->stream('Laporan Perkawinan');
     }
 
     public function loadPenduduk(Request $request, $id){
@@ -286,6 +317,32 @@ class PendudukController extends Controller
         ]);
     }
 
+    public function savePerkawinan($id){
+        $data_desa = DaftarDesa::select('*')->get();
+        $current_month = Carbon::now()->month;
+        if ($id+1 > $current_month){
+            $year = Carbon::now()->subYears(1)->year;
+        }else{
+            $year = Carbon::now()->year;
+        }
+
+        $months = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+        $month = $months[$id];
+
+        $data = Perkawinan::whereYear('perkawinan_tanggal_nikah', $year)
+                            ->whereMonth('perkawinan_tanggal_nikah', $id+1)
+                            ->select('*')
+                            ->get();
+
+        $pdf = PDF::loadView('pages.pdf.perkawinan',[
+                                'datas'     =>$data,
+                                'data_desa' =>$data_desa,
+                                'month'     =>$month
+                                ])->setPaper('f4', 'landscape');
+        
+        return $pdf->stream('Laporan Perkawinan');
+    }
+
     public function loadPerkawinan(Request $request, $id){
         $current_month = Carbon::now()->month;
         if ($id+1 > $current_month){
@@ -435,6 +492,33 @@ class PendudukController extends Controller
         return view('pages.penduduk.kematian', [
             'data_desa'         => $data_desa,
         ]);
+    }
+
+    public function saveKematian($id){
+        $data_desa = DaftarDesa::select('*')->get();
+        $current_month = Carbon::now()->month;
+        if ($id+1 > $current_month){
+            $year = Carbon::now()->subYears(1)->year;
+        }else{
+            $year = Carbon::now()->year;
+        }
+
+        $months = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+        $month = $months[$id];
+
+        $data = Kematian::join('desa as desa', 'desa.id', '=', 'kematian.id_desa')
+                            ->whereYear('kematian_tanggal_meninggal', $year)
+                            ->whereMonth('kematian_tanggal_meninggal', $id+1)
+                            ->select('kematian.*', 'desa.nama_desa as nama_desa')
+                            ->get();
+
+        $pdf = PDF::loadView('pages.pdf.kematian',[
+                                'datas'     =>$data,
+                                'data_desa' =>$data_desa,
+                                'month'     =>$month
+                                ])->setPaper('f4', 'landscape');
+        
+        return $pdf->stream('Laporan Kematian');
     }
 
     public function loadKematian(Request $request, $id){
