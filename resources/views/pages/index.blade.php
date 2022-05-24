@@ -20,7 +20,7 @@
                 <p style="text-align:center;">Selamat datang di website Administrasi Kecamatan Donri-Donri, Kabupaten Soppeng, Sulawesi Selatan. Website ini adalah
                 dirancang untuk memudahkan kegiatan administrasi dengan mengdigitalisasikan arsip-arsip administrasi sehingga dapat dengan mudah
                 di akses dan disimpan untuk keperluan di masa yang akan datang.</p>
-                <h6 style="text-align: center;">selamat menggunakan fasilitas ini</h6>
+                <h6 style="text-align: center;">Selamat Menggunakan Fasilitas Ini.</h6>
             </div>
         </div>
     </div>
