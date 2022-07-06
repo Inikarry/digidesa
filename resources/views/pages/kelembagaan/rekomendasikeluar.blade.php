@@ -21,7 +21,7 @@
                     <!-- Form Tambah  -->
                     <div class="card-body" id="createForm">
                         <form>
-                            <h5 class="text-center">Form Rekomendasi Masuk</h5>
+                            <h5 class="text-center">Form Rekomendasi Keluar</h5>
                             <meta name="csrf-token-create" content="{{ csrf_token() }}">
                             <div class="col">
                                 <div class="row justify-content-center">

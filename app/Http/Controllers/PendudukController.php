@@ -106,7 +106,7 @@ class PendudukController extends Controller
                                 'year'      =>$year
                                 ])->setPaper('legal', 'landscape');
         
-        return $pdf->stream('Laporan Perkawinan');
+        return $pdf->stream('Laporan Penduduk');
     }
 
     public function loadPenduduk(Request $request, $id){
