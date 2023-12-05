@@ -20,9 +20,12 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/', function () {
-    return view('pages.index');
-})->name('dashboard');
+Route::get('/', function (){
+    return view('home');
+});
+// Route::middleware(['auth:sanctum', 'verified'])->get('/', function () {
+//     return view('pages.index');
+// })->name('dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('pages.index');
